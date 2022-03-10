@@ -6,7 +6,7 @@
     <groupId>com.example</groupId>
     <artifactId>demo</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>springboot-mybatis</name>
+    <name>springboot-shiro</name>
 
     <!-- Spring Boot 启动父依赖 -->
     <parent>
