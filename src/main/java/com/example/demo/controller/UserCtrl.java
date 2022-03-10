@@ -7,12 +7,21 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+/**
+ * 用户控制层
+ */
 @RestController
 public class UserCtrl {
 
     @Autowired
     private UserService userService;
 
+    /**
+     * 删除用户
+     *
+     * @param userId
+     * @return
+     */
     @RequestMapping(value = "/delete", method = RequestMethod.POST)
     public Integer delete(Integer userId) {
         System.out.println(userId);
@@ -20,6 +29,12 @@ public class UserCtrl {
         return result;
     }
 
+    /**
+     * 修改用户
+     *
+     * @param user
+     * @return
+     */
     @RequestMapping(value = "/update", method = RequestMethod.POST)
     @ResponseBody
     public String update(User user) {
@@ -32,17 +47,34 @@ public class UserCtrl {
 
     }
 
+    /**
+     * 新增用户
+     *
+     * @param user
+     * @return
+     */
     @RequestMapping(value = "/insert", method = RequestMethod.POST)
     public User insert(User user) {
         return userService.insertUser(user);
     }
 
+    /**
+     * 查询全部用户
+     *
+     * @return
+     */
     @RequestMapping("/ListUser")
     @ResponseBody
     public List<User> ListUser() {
         return userService.ListUser();
     }
 
+    /**
+     * 通过用户名称查询用户
+     *
+     * @param userName
+     * @return
+     */
     @RequestMapping("/ListByName")
     @ResponseBody
     public List<User> ListUserByName(String userName) {
@@ -51,6 +83,7 @@ public class UserCtrl {
 
     /**
      * 分页
+     *
      * @return
      */
     @RequestMapping(value="/page")
@@ -64,7 +97,8 @@ public class UserCtrl {
     }
 
     /**
-     * rows
+     * 获取用户数量
+     *
      * @return
      */
     @RequestMapping(value="/rows")

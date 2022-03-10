@@ -1,10 +1,13 @@
 package com.example.demo.entity;
 
+/**
+ * 用户实体
+ */
 public class User {
-    private int userId;
-    private String userDate;
-    private String userName;
-    private String userAddress;
+    private int userId;//用户ID
+    private String userDate;//用户生效日期
+    private String userName;//用户名称
+    private String userAddress;//用户地址
 
     public int getUserId() {
         return userId;

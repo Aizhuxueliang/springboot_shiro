@@ -5,20 +5,23 @@ import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
 
+/**
+ * 用户业务层
+ */
 @Mapper
 public interface UserMapper {
 
-    public List<User> findUserByName(String userName);
+    List<User> findUserByName(String userName);
 
-    public List<User> ListUser();
+    List<User> ListUser();
 
-    public List<User> queryPage(Integer startRows);
+    List<User> queryPage(Integer startRows);
 
-    public int getRowCount();
+    int getRowCount();
 
-    public int insertUser(User user);
+    int insertUser(User user);
 
-    public int delete(int userId);
+    int delete(int userId);
 
-    public int Update(User user);
+    int Update(User user);
 }
