@@ -5,9 +5,9 @@ package com.example.demo.entity;
  */
 public class User {
     private int userId;//用户ID
-    private String userPwd;//用户密码
+    private String userDate;//用户生效日期
     private String userName;//用户名称
-    private String userRole;//用户角色
+    private String userAddress;//用户地址
 
     public int getUserId() {
         return userId;
@@ -17,12 +17,12 @@ public class User {
         this.userId = userId;
     }
 
-    public String getUserPwd() {
-        return userPwd;
+    public String getUserDate() {
+        return userDate;
     }
 
-    public void setUserPwd(String userPwd) {
-        this.userPwd = userPwd;
+    public void setUserDate(String userDate) {
+        this.userDate = userDate;
     }
 
     public String getUserName() {
@@ -33,21 +33,21 @@ public class User {
         this.userName = userName;
     }
 
-    public String getUserRole() {
-        return userRole;
+    public String getUserAddress() {
+        return userAddress;
     }
 
-    public void setUserRole(String userRole) {
-        this.userRole = userRole;
+    public void setUserAddress(String userAddress) {
+        this.userAddress = userAddress;
     }
 
     @Override
     public String toString() {
         return "User{" +
                 "userId=" + userId +
-                ", userPwd=" + userPwd +
+                ", userDate=" + userDate +
                 ", userName='" + userName + '\'' +
-                ", userRole='" + userRole + '\'' +
+                ", userAddress='" + userAddress + '\'' +
                 '}';
     }
 }
