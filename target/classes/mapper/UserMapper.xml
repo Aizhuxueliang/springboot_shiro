@@ -6,9 +6,9 @@
 
     <resultMap id="result" type="com.example.demo.entity.User">
         <result property="userId" column="userId" />
-		<result property="userDate" column="userDate" />
+		<result property="userPwd" column="userPwd" />
         <result property="userName" column="userName" />
-        <result property="userAddress" column="userAddress"/>
+        <result property="userRole" column="userRole"/>
     </resultMap>
 
     <select id="ListUser" resultMap="result">
@@ -34,13 +34,13 @@
     <insert id="insertUser" parameterType="com.example.demo.entity.User">
 		INSERT INTO user
 		(
-		userId,userDate,userName,userAddress
+		userId,userPwd,userName,userRole
 		)
 		VALUES (
 		#{userId},
-		#{userDate, jdbcType=VARCHAR},
+		#{userPwd, jdbcType=VARCHAR},
 		#{userName, jdbcType=VARCHAR},
-		#{userAddress, jdbcType=VARCHAR}
+		#{userRole, jdbcType=VARCHAR}
 		)
 	</insert>
 
@@ -50,7 +50,7 @@
 
     <update id="Update" parameterType="com.example.demo.entity.User">
 		update user
-			set user.userDate=#{userDate},user.userName=#{userName},user.userAddress=#{userAddress}
+			set user.userPwd=#{userPwd},user.userName=#{userName},user.userAddress=#{userRole}
 			where user.userId=#{userId}
 	</update>
 </mapper>

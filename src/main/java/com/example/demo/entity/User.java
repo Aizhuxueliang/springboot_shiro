@@ -1,10 +1,13 @@
 package com.example.demo.entity;
 
+/**
+ * 用户实体
+ */
 public class User {
-    private int userId;
-    private String userDate;
-    private String userName;
-    private String userAddress;
+    private int userId;//用户ID
+    private String userPwd;//用户密码
+    private String userName;//用户名称
+    private String userRole;//用户角色
 
     public int getUserId() {
         return userId;
@@ -14,12 +17,12 @@ public class User {
         this.userId = userId;
     }
 
-    public String getUserDate() {
-        return userDate;
+    public String getUserPwd() {
+        return userPwd;
     }
 
-    public void setUserDate(String userDate) {
-        this.userDate = userDate;
+    public void setUserPwd(String userPwd) {
+        this.userPwd = userPwd;
     }
 
     public String getUserName() {
@@ -30,21 +33,21 @@ public class User {
         this.userName = userName;
     }
 
-    public String getUserAddress() {
-        return userAddress;
+    public String getUserRole() {
+        return userRole;
     }
 
-    public void setUserAddress(String userAddress) {
-        this.userAddress = userAddress;
+    public void setUserRole(String userRole) {
+        this.userRole = userRole;
     }
 
     @Override
     public String toString() {
         return "User{" +
                 "userId=" + userId +
-                ", userDate=" + userDate +
+                ", userPwd=" + userPwd +
                 ", userName='" + userName + '\'' +
-                ", userAddress='" + userAddress + '\'' +
+                ", userRole='" + userRole + '\'' +
                 '}';
     }
 }
