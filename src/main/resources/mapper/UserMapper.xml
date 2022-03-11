@@ -5,10 +5,10 @@
 <mapper namespace="com.example.demo.mapper.UserMapper">
 
     <resultMap id="result" type="com.example.demo.entity.User">
-        <result property="userId" column="userId" />
-		<result property="userDate" column="userDate" />
-        <result property="userName" column="userName" />
-        <result property="userAddress" column="userAddress"/>
+        <result property="userId" column="user_id" />
+		<result property="userPwd" column="user_pwd" />
+        <result property="userName" column="user_name" />
+        <result property="userRole" column="user_role"/>
     </resultMap>
 
     <select id="ListUser" resultMap="result">
@@ -17,13 +17,13 @@
 
     <select id="findUserByName" resultMap="result" parameterType="String">
 		SELECT * FROM user
-			where userName like concat(concat('%',#{userName}),'%')
-			order by userId desc
+			where user_name like concat(concat('%',#{userName}),'%')
+			order by user_id desc
 	</select>
 
 	<select id="queryPage" resultMap="result"  parameterType="Integer">
 		select * from user
-			order by userId desc
+			order by user_id desc
 			limit #{startRows},5
 	</select>
 
@@ -34,23 +34,26 @@
     <insert id="insertUser" parameterType="com.example.demo.entity.User">
 		INSERT INTO user
 		(
-		userId,userDate,userName,userAddress
+			user_id, user_pwd, user_name, user_role
 		)
 		VALUES (
-		#{userId},
-		#{userDate, jdbcType=VARCHAR},
-		#{userName, jdbcType=VARCHAR},
-		#{userAddress, jdbcType=VARCHAR}
+			#{userId},
+			#{userPwd, jdbcType = VARCHAR},
+			#{userName, jdbcType = VARCHAR},
+			#{userRole, jdbcType = VARCHAR}
 		)
 	</insert>
 
     <delete id="delete" parameterType="int">
-		delete from user where userId=#{userId}
+		delete from user where user_id = #{userId}
 	</delete>
 
     <update id="Update" parameterType="com.example.demo.entity.User">
-		update user
-			set user.userDate=#{userDate},user.userName=#{userName},user.userAddress=#{userAddress}
-			where user.userId=#{userId}
+		update user set
+		    user.user_pwd = #{userPwd},
+		    user.user_name = #{userName},
+		    user.user_role = #{userRole}
+		where
+			user.user_id = #{userId}
 	</update>
 </mapper>
