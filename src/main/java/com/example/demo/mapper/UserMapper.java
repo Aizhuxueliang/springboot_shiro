@@ -11,9 +11,11 @@ import java.util.List;
 @Mapper
 public interface UserMapper {
 
-    List<User> findUserByName(String userName);
+    List<User> findByName(String userName);
 
-    List<User> ListUser();
+    User findUserByName(String userName);
+
+    List<User> listUser();
 
     List<User> queryPage(Integer startRows);
 
@@ -23,5 +25,7 @@ public interface UserMapper {
 
     int delete(int userId);
 
-    int Update(User user);
+    int modify(User user);
+
+    User findUserById(int userId);
 }

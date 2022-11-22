@@ -11,7 +11,7 @@
         <result property="userRole" column="user_role"/>
     </resultMap>
 
-    <select id="ListUser" resultMap="result">
+    <select id="listUser" resultMap="result">
 		SELECT * FROM user
 	</select>
 
@@ -48,7 +48,7 @@
 		delete from user where user_id = #{userId}
 	</delete>
 
-    <update id="Update" parameterType="com.example.demo.entity.User">
+    <update id="modify" parameterType="com.example.demo.entity.User">
 		update user set
 		    user.user_pwd = #{userPwd},
 		    user.user_name = #{userName},
@@ -56,4 +56,8 @@
 		where
 			user.user_id = #{userId}
 	</update>
+
+	<select id="findUserById" resultType="com.example.demo.entity.User" parameterType="int" >
+		SELECT * FROM user where user_id = #{userId}
+	</select>
 </mapper>

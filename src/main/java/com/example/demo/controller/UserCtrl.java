@@ -38,7 +38,7 @@ public class UserCtrl {
     @RequestMapping(value = "/update", method = RequestMethod.POST)
     @ResponseBody
     public String update(User user) {
-        int result = userService.Update(user);
+        int result = userService.modify(user);
         if (result >= 1) {
             return "修改成功";
         } else {
@@ -63,10 +63,10 @@ public class UserCtrl {
      *
      * @return
      */
-    @RequestMapping("/ListUser")
+    @RequestMapping("/listUser")
     @ResponseBody
-    public List<User> ListUser() {
-        return userService.ListUser();
+    public List<User> listUser() {
+        return userService.listUser();
     }
 
     /**
@@ -75,9 +75,9 @@ public class UserCtrl {
      * @param userName
      * @return
      */
-    @RequestMapping("/ListByName")
+    @RequestMapping("/listByName")
     @ResponseBody
-    public List<User> ListUserByName(String userName) {
+    public List<User> listByName(String userName) {
         return userService.findByName(userName);
     }
 
