@@ -48,7 +48,7 @@ public class UserRealm extends AuthorizingRealm {
             });
         });
 
-        /*//43-49 realized
+        /*//line 43-49 realized
         stringRoleList = user.getRoleList().stream().map(role -> {
             stringPermissionList.addAll(role.getPermissionList().stream().map(Permission::getName).collect(Collectors.toList())) ;
             return role.getName();

@@ -41,8 +41,8 @@
 			#{id},
 			#{userName, jdbcType = VARCHAR},
 			#{password, jdbcType = VARCHAR},
-			#{create_time, jdbcType = datetime}
-			#{salt, jdbcType = datetime}
+			#{createTime, jdbcType = TIMESTAMP}
+			#{salt, jdbcType = VARCHAR}
 		)
 	</insert>
 

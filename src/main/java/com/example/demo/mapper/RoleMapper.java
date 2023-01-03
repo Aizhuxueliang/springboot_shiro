@@ -25,7 +25,7 @@ public interface RoleMapper {
                     @Result(property = "name", column = "name"),
                     @Result(property = "description", column = "description"),
                     @Result(property = "permissionList", column = "id",
-                            many = @Many(select = "com.example.demo.entity.PermissionMapper.findByPermissionListByRoleId",
+                            many = @Many(select = "com.example.demo.mapper.PermissionMapper.findByPermissionListByRoleId",
                                     fetchType = FetchType.DEFAULT))
             }
     )

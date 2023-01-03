@@ -10,6 +10,7 @@ import java.util.List;
  * 权限
  */
 public interface PermissionMapper {
+
     /**
      * 根据roleId查询所有权限
      * @param roleId
