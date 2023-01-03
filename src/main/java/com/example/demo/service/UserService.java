@@ -1,7 +1,10 @@
 package com.example.demo.service;
 
+import com.example.demo.entity.Role;
 import com.example.demo.entity.User;
 import com.example.demo.mapper.UserMapper;
+import com.example.demo.mapper.RoleMapper;
+import org.apache.ibatis.annotations.Param;
 import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -21,12 +24,19 @@ public class UserService {
     @Autowired
     private UserMapper userMapper;
 
+    @Autowired
+    private RoleMapper roleMapper;
+
     public List<User> findByName(String userName) {
         return userMapper.findByName(userName);
     }
 
-    public User findUserByName(String userName) {
-        return userMapper.findUserByName(userName);
+    public User findUserByName(@Param("userName") String userName) {
+        User user = userMapper.findUserByName(userName);
+        //用户角色的集合
+        List<Role> roleList = roleMapper.findRoleListByUserId(user.getId());
+        user.setRoleList(roleList);
+        return user;
     }
 
     public List<User> queryPage(Integer startRows) {
@@ -37,29 +47,8 @@ public class UserService {
         return userMapper.getRowCount();
     }
 
-    public User insertUser(User user) {
-        //读取shiro.ini文件
-        IniSecurityManagerFactory factory=new IniSecurityManagerFactory("classpath:shiro.ini");
-        //工厂创建缓存管理器
-        SecurityManager securityManager = factory.createInstance();
-        //缓存管理器交给SecurityUtils
-        SecurityUtils.setSecurityManager(securityManager);
-        //通过SecurityUtils获得登录主体
-        Subject subject = SecurityUtils.getSubject();
-        System.out.println(subject.isAuthenticated());//false
-        //创建登录令牌
-        UsernamePasswordToken token=new UsernamePasswordToken("zs","123");
-        //登录
-        subject.login(token);
-        System.out.println(subject.isAuthenticated());//true
-        //登出
-        subject.logout();
-
-
-
-
+    public void insertUser(User user) {
         userMapper.insertUser(user);
-        return user;
     }
 
     public List<User> listUser(){
@@ -72,10 +61,6 @@ public class UserService {
 
     public int delete(int userId){
         return userMapper.delete(userId);
-    }
-
-    public User findUserById(int userId){
-        return userMapper.findUserById(userId);
     }
 
 }

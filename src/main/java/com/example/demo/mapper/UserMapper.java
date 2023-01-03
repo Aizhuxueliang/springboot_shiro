@@ -27,5 +27,4 @@ public interface UserMapper {
 
     int modify(User user);
 
-    User findUserById(int userId);
 }

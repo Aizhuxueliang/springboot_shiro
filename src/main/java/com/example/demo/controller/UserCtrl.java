@@ -54,8 +54,8 @@ public class UserCtrl {
      * @return
      */
     @RequestMapping(value = "/insert", method = RequestMethod.POST)
-    public User insert(User user) {
-        return userService.insertUser(user);
+    public void insert(User user) {
+        userService.insertUser(user);
     }
 
     /**

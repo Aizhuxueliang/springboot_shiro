@@ -5,10 +5,11 @@
 <mapper namespace="com.example.demo.mapper.UserMapper">
 
     <resultMap id="result" type="com.example.demo.entity.User">
-        <result property="userId" column="user_id" />
-		<result property="userPwd" column="user_pwd" />
-        <result property="userName" column="user_name" />
-        <result property="userRole" column="user_role"/>
+        <result property="id" column="id" />
+		<result property="username" column="username" />
+        <result property="password" column="password" />
+        <result property="createTime" column="create_time"/>
+		<result property="salt" column="salt"/>
     </resultMap>
 
     <select id="listUser" resultMap="result">
@@ -17,13 +18,13 @@
 
     <select id="findUserByName" resultMap="result" parameterType="String">
 		SELECT * FROM user
-			where user_name like concat(concat('%',#{userName}),'%')
-			order by user_id desc
+			where username like concat(concat('%',#{userName}),'%')
+			order by id asc
 	</select>
 
 	<select id="queryPage" resultMap="result"  parameterType="Integer">
 		select * from user
-			order by user_id desc
+			order by id asc
 			limit #{startRows},5
 	</select>
 
@@ -34,30 +35,27 @@
     <insert id="insertUser" parameterType="com.example.demo.entity.User">
 		INSERT INTO user
 		(
-			user_id, user_pwd, user_name, user_role
+			id, username, password, create_time, salt
 		)
 		VALUES (
-			#{userId},
-			#{userPwd, jdbcType = VARCHAR},
+			#{id},
 			#{userName, jdbcType = VARCHAR},
-			#{userRole, jdbcType = VARCHAR}
+			#{password, jdbcType = VARCHAR},
+			#{create_time, jdbcType = datetime}
+			#{salt, jdbcType = datetime}
 		)
 	</insert>
 
     <delete id="delete" parameterType="int">
-		delete from user where user_id = #{userId}
+		delete from user where id = #{id}
 	</delete>
 
     <update id="modify" parameterType="com.example.demo.entity.User">
 		update user set
-		    user.user_pwd = #{userPwd},
-		    user.user_name = #{userName},
-		    user.user_role = #{userRole}
+		    user.password = #{password},
+		    user.userName = #{username},
 		where
-			user.user_id = #{userId}
+			user.id = #{id}
 	</update>
 
-	<select id="findUserById" resultType="com.example.demo.entity.User" parameterType="int" >
-		SELECT * FROM user where user_id = #{userId}
-	</select>
 </mapper>
