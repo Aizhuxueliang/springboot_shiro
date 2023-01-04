@@ -9,6 +9,7 @@ import java.util.List;
 /**
  * 角色
  */
+@Mapper
 public interface RoleMapper {
     /**
      * 根据用户查询所有的角色
@@ -16,18 +17,5 @@ public interface RoleMapper {
      * @param userId 用户id
      * @return
      */
-    @Select("select r.id id,r.name name,r.description description  from  user_role ur " +
-            "left join role r on ur.role_id=r.id " +
-            "where ur.user_id=#{userId}")
-    @Results(
-            value = {
-                    @Result(id = true, property = "id", column = "id"),
-                    @Result(property = "name", column = "name"),
-                    @Result(property = "description", column = "description"),
-                    @Result(property = "permissionList", column = "id",
-                            many = @Many(select = "com.example.demo.mapper.PermissionMapper.findByPermissionListByRoleId",
-                                    fetchType = FetchType.DEFAULT))
-            }
-    )
     List<Role> findRoleListByUserId(@Param("userId") int userId);
 }
