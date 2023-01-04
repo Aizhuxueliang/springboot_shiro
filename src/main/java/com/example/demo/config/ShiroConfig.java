@@ -20,25 +20,25 @@ public class ShiroConfig {
         //设置SecurityManager
         shiroFilterFactoryBean.setSecurityManager(securityManager);
         //如果访问需要登录的某个接口，却没有登录，则调用此接口(如果不是前后端分离，则跳转页面)
-        shiroFilterFactoryBean.setLoginUrl("/pub/need_login");
+        shiroFilterFactoryBean.setLoginUrl("/user/need_login");
         //shiroFilterFactoryBean.setLoginUrl("/xxx.jsp");
         //登录成功后，跳转的链接，若前后端分离，没必要设置这个
         //shiroFilterFactoryBean.setSuccessUrl("");
         //登录成功，未授权会调用此方法
-        shiroFilterFactoryBean.setUnauthorizedUrl("/pub/not_permit");
+        shiroFilterFactoryBean.setUnauthorizedUrl("/user/not_permit");
         //拦截路径，必须使用:LinkedHashMap，要不然拦截效果会时有时无，因为使用的是无序的Map
         Map<String, String> filterChainDefinitionMap = new LinkedHashMap<>();
         //key=正则表达式路径，value=org.apache.shiro.web.filter.mgt.DefaultFilter
         //退出过滤器
         filterChainDefinitionMap.put("/logout", "logout");
         //匿名可以访问，游客模式
-        filterChainDefinitionMap.put("/pub/**", "anon");
+        filterChainDefinitionMap.put("/user/**", "anon");
         //登录用户才可以访问
-        filterChainDefinitionMap.put("/authc/**", "authc");
+        //filterChainDefinitionMap.put("/authc/**", "authc");
         //管理员角色才能访问
-        filterChainDefinitionMap.put("/admin/**", "roles[admin]");
+        //filterChainDefinitionMap.put("/admin/**", "roles[admin]");
         //有编辑权限才能访问
-        filterChainDefinitionMap.put("/video/update", "perms[video_update]");
+        filterChainDefinitionMap.put("/user/update", "perms[video_update]");
         //authc：url必须通过认证才可以访问
         //anon：url可以匿名访问
         //过滤链是顺序执行，从上而下，一般把/**，放到最下面
