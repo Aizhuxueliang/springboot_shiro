@@ -39,16 +39,15 @@ public class UserRealm extends AuthorizingRealm {
         List<String> stringRoleList = new ArrayList<>();
         //权限集合
         List<String> stringPermissionList = new ArrayList<>();
-
+        //往集合里面塞角色名称和权限名称
         user.getRoleList().forEach(role -> {
             stringRoleList.add(role.getName());
-            List<Permission> permissionList = role.getPermissionList();
-            permissionList.forEach(permission -> {
+            role.getPermissionList().forEach(permission -> {
                 stringPermissionList.add(permission.getName());
             });
         });
 
-        /*//line 43-49 realized
+        /*//line 43-48 realized
         stringRoleList = user.getRoleList().stream().map(role -> {
             stringPermissionList.addAll(role.getPermissionList().stream().map(Permission::getName).collect(Collectors.toList())) ;
             return role.getName();

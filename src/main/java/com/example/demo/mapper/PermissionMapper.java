@@ -1,14 +1,15 @@
 package com.example.demo.mapper;
 
 import com.example.demo.entity.Permission;
+import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
-import org.apache.ibatis.annotations.Select;
 
 import java.util.List;
 
 /**
  * 权限
  */
+@Mapper
 public interface PermissionMapper {
 
     /**
@@ -16,8 +17,5 @@ public interface PermissionMapper {
      * @param roleId
      * @return
      */
-    @Select("select p.id id,p.name name,p.url url from role_permission rp " +
-            "left join permission p on rp.permission_id=p.id " +
-            "where rp.role_id=#{roleId}")
     List<Permission> findByPermissionListByRoleId(@Param("roleId") int roleId);
 }

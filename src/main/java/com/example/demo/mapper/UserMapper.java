@@ -2,6 +2,7 @@ package com.example.demo.mapper;
 
 import com.example.demo.entity.User;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -13,7 +14,7 @@ public interface UserMapper {
 
     List<User> findByName(String userName);
 
-    User findUserByName(String userName);
+    User findUserByName(@Param("userName") String userName);
 
     List<User> listUser();
 

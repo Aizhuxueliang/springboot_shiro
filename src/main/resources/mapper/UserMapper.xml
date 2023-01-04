@@ -22,7 +22,7 @@
 			order by id asc
 	</select>
 
-	<select id="queryPage" resultMap="result"  parameterType="Integer">
+	<select id="queryPage" resultMap="result" parameterType="Integer">
 		select * from user
 			order by id asc
 			limit #{startRows},5

@@ -31,7 +31,7 @@ public class UserService {
         return userMapper.findByName(userName);
     }
 
-    public User findUserByName(@Param("userName") String userName) {
+    public User findUserByName(String userName) {
         User user = userMapper.findUserByName(userName);
         //用户角色的集合
         List<Role> roleList = roleMapper.findRoleListByUserId(user.getId());
