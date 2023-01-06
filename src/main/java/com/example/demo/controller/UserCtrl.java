@@ -4,11 +4,14 @@ import com.example.demo.entity.User;
 import com.example.demo.service.UserService;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.UsernamePasswordToken;
+import org.apache.shiro.authz.SimpleAuthorizationInfo;
 import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 用户控制层
@@ -37,17 +40,32 @@ public class UserCtrl {
      */
     @RequestMapping(value = "/login", method = RequestMethod.POST)
     @ResponseBody
-    public String login(@RequestBody User user) {
+    public Object login(@RequestBody User user) {
+        Map returnMap = new HashMap<>();
         //拿到主体
         Subject subject = SecurityUtils.getSubject();
         try {
             UsernamePasswordToken usernamePasswordToken = new UsernamePasswordToken(user.getUsername(), user.getPassword());
             subject.login(usernamePasswordToken);
-            return subject.getSession().getId().toString();
+            returnMap.put("permissions", subject.getSession().getAttribute("permissions"));
+            returnMap.put("token", subject.getSession().getId());
+            return returnMap;
         }catch (Exception e){
             e.printStackTrace();
-            return "账号或密码错误";
+            returnMap.put("error", e.getMessage());
+            return returnMap;
         }
+    }
+
+    /**
+     * 获取用户所有权限
+     */
+    @RequestMapping(value = "/getPermissionName", method = RequestMethod.GET)
+    @ResponseBody
+    public Object getPermissionName() {
+        Subject subject = SecurityUtils.getSubject();
+        SecurityUtils.getSubject().getPrincipal();
+        return null;
     }
 
 

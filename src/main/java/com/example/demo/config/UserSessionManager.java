@@ -8,10 +8,10 @@ import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import java.io.Serializable;
 
-public class CustomSessionManager extends DefaultWebSessionManager {
+public class UserSessionManager extends DefaultWebSessionManager {
     public static final String AUTHORIZATION="token";
 
-    public CustomSessionManager() {
+    public UserSessionManager() {
         super();
     }
 

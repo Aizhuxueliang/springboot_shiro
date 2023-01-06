@@ -91,9 +91,9 @@ public class ShiroConfig {
      */
     @Bean
     public SessionManager sessionManager() {
-        CustomSessionManager customSessionManager = new CustomSessionManager();
+        UserSessionManager userSessionManager = new UserSessionManager();
         //超时时间，默认 30分钟，会话超时，单位毫秒
 //        customSessionManager.setGlobalSessionTimeout(200000);
-        return customSessionManager;
+        return userSessionManager;
     }
 }

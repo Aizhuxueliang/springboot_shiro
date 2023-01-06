@@ -1,9 +1,9 @@
 package com.example.demo.config;
 
 import com.example.demo.entity.Permission;
-import com.example.demo.entity.Role;
 import com.example.demo.entity.User;
 import com.example.demo.service.UserService;
+import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.*;
 import org.apache.shiro.authz.AuthorizationInfo;
 import org.apache.shiro.authz.SimpleAuthorizationInfo;
@@ -11,9 +11,7 @@ import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.subject.PrincipalCollection;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 
@@ -36,26 +34,19 @@ public class UserRealm extends AuthorizingRealm {
             return null;
         }
         //角色集合
-        List<String> stringRoleList = new ArrayList<>();
+        Set<String> stringRoleSet = new HashSet<>();
         //权限集合
-        List<String> stringPermissionList = new ArrayList<>();
+        Set<String> stringPermissionSet = new HashSet<>();
         //往集合里面塞角色名称和权限名称
         user.getRoleList().forEach(role -> {
-            stringRoleList.add(role.getName());
+            stringRoleSet.add(role.getName());
             role.getPermissionList().forEach(permission -> {
-                stringPermissionList.add(permission.getName());
+                stringPermissionSet.add(permission.getName());
             });
         });
-
-        /*//line 43-48 realized
-        stringRoleList = user.getRoleList().stream().map(role -> {
-            stringPermissionList.addAll(role.getPermissionList().stream().map(Permission::getName).collect(Collectors.toList())) ;
-            return role.getName();
-        }).collect(Collectors.toList());*/
-
         SimpleAuthorizationInfo simpleAuthorizationInfo = new SimpleAuthorizationInfo();
-        simpleAuthorizationInfo.addRoles(stringRoleList);
-        simpleAuthorizationInfo.addStringPermissions(stringPermissionList);
+        simpleAuthorizationInfo.addRoles(stringRoleSet);
+        simpleAuthorizationInfo.addStringPermissions(stringPermissionSet);
         return simpleAuthorizationInfo;
     }
 
@@ -74,6 +65,12 @@ public class UserRealm extends AuthorizingRealm {
         if (user == null) {
             return null;
         }
+        //权限集合
+        Set<String> stringPermissionSet = new HashSet<>();
+        user.getRoleList().forEach(role -> {
+            stringPermissionSet.addAll(role.getPermissionList().stream().map(Permission::getName).collect(Collectors.toList()));
+        });
+        SecurityUtils.getSubject().getSession().setAttribute("permissions", stringPermissionSet);
         //密码
         String pwd = user.getPassword();
         if (pwd == null || "".equals(pwd)) {
