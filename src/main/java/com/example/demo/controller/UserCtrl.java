@@ -58,18 +58,6 @@ public class UserCtrl {
     }
 
     /**
-     * 获取用户所有权限
-     */
-    @RequestMapping(value = "/getPermissionName", method = RequestMethod.GET)
-    @ResponseBody
-    public Object getPermissionName() {
-        Subject subject = SecurityUtils.getSubject();
-        SecurityUtils.getSubject().getPrincipal();
-        return null;
-    }
-
-
-    /**
      * 删除用户
      *
      * @param userId
