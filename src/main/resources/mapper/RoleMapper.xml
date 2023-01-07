@@ -1,0 +1,27 @@
+<?xml version = "1.0" encoding = "UTF-8"?>
+<!DOCTYPE mapper PUBLIC
+        "-//mybatis.org//DTD com.example.Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.demo.mapper.RoleMapper">
+
+    <resultMap id="roleResult" type="com.example.demo.entity.Role">
+        <result property="id" column="id" />
+		<result property="name" column="name" />
+        <result property="description" column="description" />
+		<collection property="permissionList" column="id" select="com.example.demo.mapper.PermissionMapper.findByPermissionListByRoleId" />
+    </resultMap>
+
+    <select id="findRoleListByUserId" resultMap="roleResult" parameterType="int">
+		select
+			r.id id,
+			r.name name,
+			r.description description
+		from
+			user_role ur
+		left join role r on
+			ur.role_id = r.id
+		where
+			ur.user_id = #{userId}
+	</select>
+
+</mapper>

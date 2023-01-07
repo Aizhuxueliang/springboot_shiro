@@ -1,7 +1,9 @@
 package com.example.demo.service;
 
+import com.example.demo.entity.Role;
 import com.example.demo.entity.User;
 import com.example.demo.mapper.UserMapper;
+import com.example.demo.mapper.RoleMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,8 +18,19 @@ public class UserService {
     @Autowired
     private UserMapper userMapper;
 
+    @Autowired
+    private RoleMapper roleMapper;
+
     public List<User> findByName(String userName) {
-        return userMapper.findUserByName(userName);
+        return userMapper.findByName(userName);
+    }
+
+    public User findUserByName(String userName) {
+        User user = userMapper.findUserByName(userName);
+        //用户角色的集合
+        List<Role> roleList = roleMapper.findRoleListByUserId(user.getId());
+        user.setRoleList(roleList);
+        return user;
     }
 
     public List<User> queryPage(Integer startRows) {
@@ -28,17 +41,16 @@ public class UserService {
         return userMapper.getRowCount();
     }
 
-    public User insertUser(User user) {
+    public void insertUser(User user) {
         userMapper.insertUser(user);
-        return user;
     }
 
-    public List<User> ListUser(){
-        return userMapper.ListUser();
+    public List<User> listUser(){
+        return userMapper.listUser();
     }
 
-    public int Update(User user){
-        return userMapper.Update(user);
+    public int modify(User user){
+        return userMapper.modify(user);
     }
 
     public int delete(int userId){

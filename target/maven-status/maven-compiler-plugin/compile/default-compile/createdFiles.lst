@@ -1,5 +1,0 @@
-com\example\demo\DemoApplication.class
-com\example\demo\entity\User.class
-com\example\demo\controller\UserCtrl.class
-com\example\demo\service\UserService.class
-com\example\demo\mapper\UserMapper.class

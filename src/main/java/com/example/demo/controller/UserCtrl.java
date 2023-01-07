@@ -2,19 +2,60 @@ package com.example.demo.controller;
 
 import com.example.demo.entity.User;
 import com.example.demo.service.UserService;
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.authc.UsernamePasswordToken;
+import org.apache.shiro.authz.SimpleAuthorizationInfo;
+import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 用户控制层
  */
 @RestController
+@RequestMapping("user")
 public class UserCtrl {
 
     @Autowired
     private UserService userService;
+
+    /**
+     * 需要登录
+     *
+     * @return
+     */
+    @GetMapping("need_login")
+    public String needLogin() {
+        return "温馨提示：请使用对应的账号登录";
+    }
+
+    /**
+     * 登录接口
+     * @param user
+     * @return
+     */
+    @RequestMapping(value = "/login", method = RequestMethod.POST)
+    @ResponseBody
+    public Object login(@RequestBody User user) {
+        Map returnMap = new HashMap<>();
+        //拿到主体
+        Subject subject = SecurityUtils.getSubject();
+        try {
+            UsernamePasswordToken usernamePasswordToken = new UsernamePasswordToken(user.getUsername(), user.getPassword());
+            subject.login(usernamePasswordToken);
+            returnMap.put("permissions", subject.getSession().getAttribute("permissions"));
+            returnMap.put("token", subject.getSession().getId());
+            return returnMap;
+        }catch (Exception e){
+            e.printStackTrace();
+            returnMap.put("error", e.getMessage());
+            return returnMap;
+        }
+    }
 
     /**
      * 删除用户
@@ -38,7 +79,7 @@ public class UserCtrl {
     @RequestMapping(value = "/update", method = RequestMethod.POST)
     @ResponseBody
     public String update(User user) {
-        int result = userService.Update(user);
+        int result = userService.modify(user);
         if (result >= 1) {
             return "修改成功";
         } else {
@@ -54,8 +95,8 @@ public class UserCtrl {
      * @return
      */
     @RequestMapping(value = "/insert", method = RequestMethod.POST)
-    public User insert(User user) {
-        return userService.insertUser(user);
+    public void insert(User user) {
+        userService.insertUser(user);
     }
 
     /**
@@ -63,10 +104,10 @@ public class UserCtrl {
      *
      * @return
      */
-    @RequestMapping("/ListUser")
+    @RequestMapping("/listUser")
     @ResponseBody
-    public List<User> ListUser() {
-        return userService.ListUser();
+    public List<User> listUser() {
+        return userService.listUser();
     }
 
     /**
@@ -75,9 +116,9 @@ public class UserCtrl {
      * @param userName
      * @return
      */
-    @RequestMapping("/ListByName")
+    @RequestMapping("/listByName")
     @ResponseBody
-    public List<User> ListUserByName(String userName) {
+    public List<User> listByName(String userName) {
         return userService.findByName(userName);
     }
 
