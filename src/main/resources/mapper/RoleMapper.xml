@@ -24,4 +24,17 @@
 			ur.user_id = #{userId}
 	</select>
 
+	<delete id="removeRolePermissionByRoleId" parameterType="int">
+		delete from role_permission where role_id = #{id}
+	</delete>
+
+	<insert id="addRolePermission" parameterType="com.example.demo.entity.Role" useGeneratedKeys="true" keyProperty="id">
+		<if test="permissionList != null and permissionList.size() != 0">
+			insert into role_permission(
+				role_id,
+				permission_id
+			)values<foreach collection="permissionList" item="item" close=";" separator=",">(#{id}, #{item.id})</foreach>
+		</if>
+	</insert>
+
 </mapper>

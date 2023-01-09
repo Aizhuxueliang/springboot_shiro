@@ -23,7 +23,6 @@ public class UserCtrl {
 
     @Autowired
     private UserService userService;
-    private Map returnMap = new HashMap<>();
 
     /**
      * 需要登录
@@ -32,12 +31,12 @@ public class UserCtrl {
      */
     @GetMapping("need_login")
     public Map needLogin() {
-        returnMap.put("error", "温馨提示：请使用对应的账号登录");
-        return returnMap;
+        return userService.reuslt("error", "温馨提示：请使用对应的账号登录", "",  "", "", "");
     }
 
     /**
      * 登录接口
+     *
      * @param user
      * @return
      */
@@ -49,18 +48,16 @@ public class UserCtrl {
         try {
             UsernamePasswordToken usernamePasswordToken = new UsernamePasswordToken(user.getUsername(), user.getPassword());
             subject.login(usernamePasswordToken);
-            returnMap.put("permissions", subject.getSession().getAttribute("permissions"));
-            returnMap.put("token", subject.getSession().getId());
-            return returnMap;
+            return userService.reuslt("permissions", subject.getSession().getAttribute("permissions"), "token",  subject.getSession().getId(), "", "");
         }catch (Exception e){
             e.printStackTrace();
-            returnMap.put("error", e.getMessage());
-            return returnMap;
+            return userService.reuslt("error", e.getMessage(), "",  "", "", "");
         }
     }
 
     /**
-     * 获取用户的权限类型
+     * 获取角色的权限类型
+     *
      * @param role
      * @return
      */
@@ -71,8 +68,24 @@ public class UserCtrl {
             return userService.findPermissionListByRoleId(role.getId());
         }catch (Exception e){
             e.printStackTrace();
-            returnMap.put("error", e.getMessage());
-            return returnMap;
+            return userService.reuslt("error", e.getMessage(), "",  "", "", "");
+        }
+    }
+
+    /**
+     * 更新角色具有的权限
+     *
+     * @param role
+     * @return
+     */
+    @RequestMapping(value = "/updateRolePermission", method = RequestMethod.POST)
+    @ResponseBody
+    public Map updateRolePermission(@RequestBody Role role) {
+        try{
+            return userService.updateRolePermission(role);
+        }catch (Exception e){
+            e.printStackTrace();
+            return userService.reuslt("error", e.getMessage(), "",  "", "", "");
         }
     }
 
