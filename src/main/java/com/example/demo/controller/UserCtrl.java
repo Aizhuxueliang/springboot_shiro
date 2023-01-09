@@ -31,8 +31,9 @@ public class UserCtrl {
      * @return
      */
     @GetMapping("need_login")
-    public String needLogin() {
-        return "温馨提示：请使用对应的账号登录";
+    public Map needLogin() {
+        returnMap.put("error", "温馨提示：请使用对应的账号登录");
+        return returnMap;
     }
 
     /**
@@ -42,7 +43,7 @@ public class UserCtrl {
      */
     @RequestMapping(value = "/login", method = RequestMethod.POST)
     @ResponseBody
-    public Object login(@RequestBody User user) {
+    public Map login(@RequestBody User user) {
         //拿到主体
         Subject subject = SecurityUtils.getSubject();
         try {
