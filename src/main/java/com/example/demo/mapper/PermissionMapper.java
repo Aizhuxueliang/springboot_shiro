@@ -13,9 +13,22 @@ import java.util.List;
 public interface PermissionMapper {
 
     /**
-     * 根据roleId查询所有权限
+     * 根据roleId查询属于roleId的权限权限
      * @param roleId
      * @return
      */
     List<Permission> findByPermissionListByRoleId(@Param("roleId") int roleId);
+
+    /**
+     * 根据roleId查询不属于roleId的权限
+     * @param roleId
+     * @return
+     */
+    List<Permission> findNotPermissionListByRoleId(@Param("roleId") int roleId);
+
+    /**
+     * 查询所有的权限
+     * @return
+     */
+    List<Permission> findAllPermission();
 }

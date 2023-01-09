@@ -1,13 +1,16 @@
 package com.example.demo.service;
 
+import com.example.demo.entity.Permission;
 import com.example.demo.entity.Role;
 import com.example.demo.entity.User;
+import com.example.demo.mapper.PermissionMapper;
 import com.example.demo.mapper.UserMapper;
 import com.example.demo.mapper.RoleMapper;
+import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
+import java.util.*;
 
 /**
  * 用户服务层
@@ -21,6 +24,9 @@ public class UserService {
     @Autowired
     private RoleMapper roleMapper;
 
+    @Autowired
+    private PermissionMapper permissionMapper;
+
     public List<User> findByName(String userName) {
         return userMapper.findByName(userName);
     }
@@ -31,6 +37,20 @@ public class UserService {
         List<Role> roleList = roleMapper.findRoleListByUserId(user.getId());
         user.setRoleList(roleList);
         return user;
+    }
+
+    public Map findPermissionListByRoleId(int roleId){
+        Map reusltMap = new HashMap<>();
+        //角色具有的权限集合
+        List<Permission> bePermissionList = permissionMapper.findByPermissionListByRoleId(roleId);
+        reusltMap.put("bePermissionList", bePermissionList);
+        //角色没有的权限集合
+        Collection notPermissionList = permissionMapper.findNotPermissionListByRoleId(roleId);
+        reusltMap.put("notPermissionList", notPermissionList);
+        //所有权限集合
+        Collection<Permission> allPermissionList = CollectionUtils.union(bePermissionList, notPermissionList);
+        reusltMap.put("allPermissionList", allPermissionList);
+        return reusltMap;
     }
 
     public List<User> queryPage(Integer startRows) {

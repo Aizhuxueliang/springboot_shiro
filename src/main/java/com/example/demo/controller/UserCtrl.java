@@ -1,5 +1,6 @@
 package com.example.demo.controller;
 
+import com.example.demo.entity.Role;
 import com.example.demo.entity.User;
 import com.example.demo.service.UserService;
 import org.apache.shiro.SecurityUtils;
@@ -22,6 +23,7 @@ public class UserCtrl {
 
     @Autowired
     private UserService userService;
+    private Map returnMap = new HashMap<>();
 
     /**
      * 需要登录
@@ -41,7 +43,6 @@ public class UserCtrl {
     @RequestMapping(value = "/login", method = RequestMethod.POST)
     @ResponseBody
     public Object login(@RequestBody User user) {
-        Map returnMap = new HashMap<>();
         //拿到主体
         Subject subject = SecurityUtils.getSubject();
         try {
@@ -50,6 +51,23 @@ public class UserCtrl {
             returnMap.put("permissions", subject.getSession().getAttribute("permissions"));
             returnMap.put("token", subject.getSession().getId());
             return returnMap;
+        }catch (Exception e){
+            e.printStackTrace();
+            returnMap.put("error", e.getMessage());
+            return returnMap;
+        }
+    }
+
+    /**
+     * 获取用户的权限类型
+     * @param role
+     * @return
+     */
+    @RequestMapping(value = "/findPermissionListByRoleId", method = RequestMethod.POST)
+    @ResponseBody
+    public Map findPermissionListByRoleId(@RequestBody Role role) {
+        try{
+            return userService.findPermissionListByRoleId(role.getId());
         }catch (Exception e){
             e.printStackTrace();
             returnMap.put("error", e.getMessage());

@@ -22,4 +22,31 @@
         where
             rp.role_id = #{roleId}
 	</select>
+
+    <select id="findNotPermissionListByRoleId" resultMap="permissionResult" parameterType="int">
+        select
+            pp.id id,
+            pp.name name,
+            pp.url url
+        from
+            permission pp
+        where
+            pp.id not in (
+            select
+                p.id id
+            from
+                role_permission rp
+            left join permission p on
+                rp.permission_id = p.id
+            where
+                rp.role_id = #{roleId});
+    </select>
+
+    <select id="findAllPermission" resultMap="permissionResult">
+        select
+            p.id id,
+            p.name name,
+            p.url url
+        from permission p
+    </select>
 </mapper>
