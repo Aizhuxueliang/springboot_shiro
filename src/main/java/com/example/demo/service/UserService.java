@@ -28,10 +28,6 @@ public class UserService {
     @Autowired
     private PermissionMapper permissionMapper;
 
-    public List<User> findByName(String userName) {
-        return userMapper.findByName(userName);
-    }
-
     public User findUserByName(String userName) {
         User user = userMapper.findUserByName(userName);
         //用户角色的集合
@@ -52,12 +48,20 @@ public class UserService {
 
     @Transactional(rollbackFor = {Exception.class})
     public Map updateRolePermission(Role role){
-        int remove = roleMapper.removeRolePermissionByRoleId(role.getId());
-        int add =0;
+        int removeRolePermission = roleMapper.removeRolePermissionByRoleId(role.getId());
+        int addRolePermission = 0;
         if (role.getPermissionList().size()!=0 && role.getPermissionList()!=null){
-            add = roleMapper.addRolePermission(role);
+            addRolePermission = roleMapper.addRolePermission(role);
         }
-        return reuslt("remove", remove, "add", add, "", "");
+        return reuslt("removeRolePermission", removeRolePermission, "addRolePermission", addRolePermission, "", "");
+    }
+
+    @Transactional(rollbackFor = {Exception.class})
+    public Map removeRole(Role role){
+        int removeRolePermission = roleMapper.removeRolePermissionByRoleId(role.getId());
+        int removeRole = roleMapper.removeRoleByRoleId(role.getId());
+        int removeUserRole = userMapper.removeUserRoleByRoleId(role.getId());
+        return reuslt("removeRolePermission", removeRolePermission, "removeRole", removeRole, "removeUserRole", removeUserRole);
     }
 
     public List<User> queryPage(Integer startRows) {
@@ -70,10 +74,6 @@ public class UserService {
 
     public void insertUser(User user) {
         userMapper.insertUser(user);
-    }
-
-    public List<User> listUser(){
-        return userMapper.listUser();
     }
 
     public int modify(User user){

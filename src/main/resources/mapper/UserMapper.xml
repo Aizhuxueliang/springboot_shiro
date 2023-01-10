@@ -12,15 +12,19 @@
 		<result property="salt" column="salt"/>
     </resultMap>
 
-    <select id="listUser" resultMap="result">
-		SELECT * FROM user
+    <select id="findUserByName" resultMap="result" parameterType="String">
+		select * from user where username = #{userName}
 	</select>
 
-    <select id="findUserByName" resultMap="result" parameterType="String">
-		SELECT * FROM user
-			where username like concat(concat('%',#{userName}),'%')
-			order by id asc
+	<select id="findUserByLikeName" resultMap="result" parameterType="String">
+		select * from user
+		where username like concat(concat('%',#{userName}),'%')
+		order by id asc
 	</select>
+
+	<delete id="removeUserRoleByRoleId" parameterType="int">
+		delete from user_role where role_id = #{id}
+	</delete>
 
 	<select id="queryPage" resultMap="result" parameterType="Integer">
 		select * from user

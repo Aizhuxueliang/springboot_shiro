@@ -33,4 +33,12 @@ public interface RoleMapper {
      * @return
      */
     int addRolePermission(Role role);
+
+    /**
+     * 通过角色id删除角色中角色
+     *
+     * @param id
+     * @return
+     */
+    int removeRoleByRoleId(int id);
 }

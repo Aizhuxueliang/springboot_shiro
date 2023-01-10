@@ -33,13 +33,13 @@
         where
             pp.id not in (
             select
-                p.id id
+                distinct p.id id
             from
                 role_permission rp
             left join permission p on
                 rp.permission_id = p.id
             where
-                rp.role_id = #{roleId});
+                rp.role_id = #{roleId})
     </select>
 
     <select id="findAllPermission" resultMap="permissionResult">

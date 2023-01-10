@@ -29,7 +29,7 @@ public class UserCtrl {
      *
      * @return
      */
-    @GetMapping("need_login")
+    @GetMapping("/need_login")
     public Map needLogin() {
         return userService.reuslt("error", "温馨提示：请使用对应的账号登录", "",  "", "", "");
     }
@@ -90,6 +90,23 @@ public class UserCtrl {
     }
 
     /**
+     * 删除角色
+     *
+     * @param role
+     * @return
+     */
+    @RequestMapping(value = "/removeRole", method = RequestMethod.POST)
+    @ResponseBody
+    public Map removeRole(@RequestBody Role role) {
+        try{
+            return userService.removeRole(role);
+        }catch (Exception e){
+            e.printStackTrace();
+            return userService.reuslt("error", e.getMessage(), "",  "", "", "");
+        }
+    }
+
+    /**
      * 删除用户
      *
      * @param userId
@@ -103,24 +120,6 @@ public class UserCtrl {
     }
 
     /**
-     * 修改用户
-     *
-     * @param user
-     * @return
-     */
-    @RequestMapping(value = "/update", method = RequestMethod.POST)
-    @ResponseBody
-    public String update(User user) {
-        int result = userService.modify(user);
-        if (result >= 1) {
-            return "修改成功";
-        } else {
-            return "修改失败";
-        }
-
-    }
-
-    /**
      * 新增用户
      *
      * @param user
@@ -129,29 +128,6 @@ public class UserCtrl {
     @RequestMapping(value = "/insert", method = RequestMethod.POST)
     public void insert(User user) {
         userService.insertUser(user);
-    }
-
-    /**
-     * 查询全部用户
-     *
-     * @return
-     */
-    @RequestMapping("/listUser")
-    @ResponseBody
-    public List<User> listUser() {
-        return userService.listUser();
-    }
-
-    /**
-     * 通过用户名称查询用户
-     *
-     * @param userName
-     * @return
-     */
-    @RequestMapping("/listByName")
-    @ResponseBody
-    public List<User> listByName(String userName) {
-        return userService.findByName(userName);
     }
 
     /**
@@ -167,16 +143,5 @@ public class UserCtrl {
         int startRows = pageSize*(pageNow-1);
         List<User> list = userService.queryPage(startRows);
         return list;
-    }
-
-    /**
-     * 获取用户数量
-     *
-     * @return
-     */
-    @RequestMapping(value="/rows")
-    @ResponseBody
-    public int rows(){
-        return userService.getRowCount();
     }
 }

@@ -12,11 +12,29 @@ import java.util.List;
 @Mapper
 public interface UserMapper {
 
-    List<User> findByName(String userName);
-
+    /**
+     * 根据用户名查询用户
+     *
+     * @param userName
+     * @return
+     */
     User findUserByName(@Param("userName") String userName);
 
-    List<User> listUser();
+    /**
+     * 根据用户名模糊查询用户
+     *
+     * @param userName
+     * @return
+     */
+    List<User> findUserByLikeName(@Param("userName") String userName);
+
+    /**
+     * 通过角色id删除用户角色关系表中数据
+     *
+     * @param id
+     * @return
+     */
+    int removeUserRoleByRoleId(int id);
 
     List<User> queryPage(Integer startRows);
 
