@@ -58,7 +58,6 @@ public class UserRealm extends AuthorizingRealm {
      */
     @Override
     protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken authenticationToken) throws AuthenticationException {
-
         //从token中获取用户信息
         String uesrName = (String) authenticationToken.getPrincipal();
         User user = userService.findUserByName(uesrName);
