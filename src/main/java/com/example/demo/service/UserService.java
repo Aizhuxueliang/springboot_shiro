@@ -43,7 +43,7 @@ public class UserService {
         Collection notPermissionList = permissionMapper.findNotPermissionListByRoleId(roleId);
         //所有权限集合
         Collection<Permission> allPermissionList = CollectionUtils.union(bePermissionList, notPermissionList);
-        return reuslt("bePermissionList", bePermissionList, "notPermissionList", notPermissionList, "allPermissionList", allPermissionList);
+        return this.resultMap("bePermissionList", bePermissionList, "notPermissionList", notPermissionList, "allPermissionList", allPermissionList);
     }
 
     @Transactional(rollbackFor = {Exception.class})
@@ -53,7 +53,7 @@ public class UserService {
         if (role.getPermissionList().size()!=0 && role.getPermissionList()!=null){
             addRolePermission = roleMapper.addRolePermission(role);
         }
-        return reuslt("removeRolePermission", removeRolePermission, "addRolePermission", addRolePermission, "", "");
+        return this.resultMap("removeRolePermission", removeRolePermission, "addRolePermission", addRolePermission, "", "");
     }
 
     @Transactional(rollbackFor = {Exception.class})
@@ -61,7 +61,12 @@ public class UserService {
         int removeRolePermission = roleMapper.removeRolePermissionByRoleId(role.getId());
         int removeRole = roleMapper.removeRoleByRoleId(role.getId());
         int removeUserRole = userMapper.removeUserRoleByRoleId(role.getId());
-        return reuslt("removeRolePermission", removeRolePermission, "removeRole", removeRole, "removeUserRole", removeUserRole);
+        return this.resultMap("removeRolePermission", removeRolePermission, "removeRole", removeRole, "removeUserRole", removeUserRole);
+    }
+
+    public Map addRole(Role role){
+        int addRole = roleMapper.addRole(role);
+        return this.resultMap("addRole", addRole, "",  "", "", "");
     }
 
     public List<User> queryPage(Integer startRows) {
@@ -84,15 +89,15 @@ public class UserService {
         return userMapper.delete(userId);
     }
 
-    public Map reuslt(String str1, Object obj1, String str2, Object obj2, String str3, Object obj3){
-        Map reusltMap = new HashMap<String, Object>();
+    public Map resultMap(String str1, Object obj1, String str2, Object obj2, String str3, Object obj3){
+        Map<String, Object> resultMap = new HashMap<>();
         if (!"".equals(str1) || !"".equals(obj1))
-            reusltMap.put(str1, obj1);
+            resultMap.put(str1, obj1);
         if (!"".equals(str2) || !"".equals(obj2))
-            reusltMap.put(str2, obj2);
+            resultMap.put(str2, obj2);
         if (!"".equals(str3) || !"".equals(obj3))
-            reusltMap.put(str3, obj3);
-        return reusltMap;
+            resultMap.put(str3, obj3);
+        return resultMap;
     }
 
 }

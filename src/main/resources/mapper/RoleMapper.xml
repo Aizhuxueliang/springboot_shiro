@@ -41,4 +41,13 @@
 		</if>
 	</insert>
 
+	<insert id="addRole" parameterType="com.example.demo.entity.Role">
+		insert into role(
+			name,
+			description
+		)values(
+			#{name, jdbcType = VARCHAR},
+			#{description, jdbcType = VARCHAR})
+	</insert>
+
 </mapper>
