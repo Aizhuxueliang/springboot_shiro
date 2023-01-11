@@ -36,11 +36,21 @@ public class UserService {
         return user;
     }
 
+    public Map<String, Object> findRoleListByUserId(int roleId){
+        //用戶具有的角色集合
+        List<Role> beRoleList = roleMapper.findRoleListByUserId1(roleId);
+        //用戶没有的角色集合
+        List<Role> notRoleList = roleMapper.findNotRoleListByUserId(roleId);
+        //所有集合
+        Collection<Role> allRoleList = CollectionUtils.union(beRoleList, notRoleList);
+        return this.resultMap("beRoleList", beRoleList, "notRoleList", notRoleList, "allRoleList", allRoleList);
+    }
+
     public Map<String, Object> findPermissionListByRoleId(int roleId){
         //角色具有的权限集合
         List<Permission> bePermissionList = permissionMapper.findByPermissionListByRoleId(roleId);
         //角色没有的权限集合
-        Collection<Permission> notPermissionList = permissionMapper.findNotPermissionListByRoleId(roleId);
+        List<Permission> notPermissionList = permissionMapper.findNotPermissionListByRoleId(roleId);
         //所有权限集合
         Collection<Permission> allPermissionList = CollectionUtils.union(bePermissionList, notPermissionList);
         return this.resultMap("bePermissionList", bePermissionList, "notPermissionList", notPermissionList, "allPermissionList", allPermissionList);

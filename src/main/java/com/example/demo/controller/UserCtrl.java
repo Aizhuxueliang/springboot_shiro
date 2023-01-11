@@ -52,6 +52,23 @@ public class UserCtrl {
     }
 
     /**
+     * 获取用户的角色类型
+     *
+     * @param user user
+     * @return resultMap
+     */
+    @RequestMapping(value = "/findRoleListByUserId", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> findRoleListByUserId(@RequestBody User user) {
+        try{
+            return userService.findRoleListByUserId(user.getId());
+        }catch (Exception e){
+            e.printStackTrace();
+            return userService.resultMap("error", e.getMessage(), "",  "", "", "");
+        }
+    }
+
+    /**
      * 获取角色的权限类型
      *
      * @param role role

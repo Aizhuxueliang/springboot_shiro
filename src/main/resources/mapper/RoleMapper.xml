@@ -11,6 +11,12 @@
 		<collection property="permissionList" column="id" select="com.example.demo.mapper.PermissionMapper.findByPermissionListByRoleId" />
     </resultMap>
 
+	<resultMap id="roleResult1" type="com.example.demo.entity.Role">
+		<result property="id" column="id" />
+		<result property="name" column="name" />
+		<result property="description" column="description" />
+	</resultMap>
+
     <select id="findRoleListByUserId" resultMap="roleResult" parameterType="int">
 		select
 			r.id id,
@@ -22,6 +28,34 @@
 			ur.role_id = r.id
 		where
 			ur.user_id = #{userId}
+	</select>
+
+	<select id="findRoleListByUserId1" resultMap="roleResult1" parameterType="int">
+		select
+		r.id id,
+		r.name name,
+		r.description description
+		from
+		user_role ur
+		left join role r on
+		ur.role_id = r.id
+		where
+		ur.user_id = #{userId}
+	</select>
+
+	<select id="findNotRoleListByUserId" resultMap="roleResult1" parameterType="int">
+		select * from
+			role r1
+		where
+			r1.id not in(
+			select
+				DISTINCT r.id id
+			from
+				user_role ur
+			left join role r on
+				ur.role_id = r.id
+			where
+				ur.user_id = #{userId});
 	</select>
 
 	<delete id="removeRolePermissionByRoleId" parameterType="int">
