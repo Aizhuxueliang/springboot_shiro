@@ -11,7 +11,7 @@ import java.util.List;
 @Mapper
 public interface RoleMapper {
     /**
-     * 根据用户查询所有的角色
+     * 根据用户id查询其具有的角色
      *
      * @param userId 用户id
      * @return List<Role>
@@ -19,20 +19,20 @@ public interface RoleMapper {
     List<Role> findRoleListByUserId(@Param("userId") int userId);
 
     /**
-     * 根据用户查询所有的角色
+     * 根据用户id查询其具有的角色不包含权限
      *
      * @param userId 用户id
      * @return List<Role>
      */
-    List<Role> findRoleListByUserId1(@Param("userId") int userId);
+    List<Role> findRoleListByUserIdNotPermission(@Param("userId") int userId);
 
     /**
-     * 根据用户id查询用戶不具有的角色
+     * 根据用户id查询用戶不具有的角色不包含权限
      *
      * @param userId 用户id
      * @return List<Role>
      */
-    List<Role> findNotRoleListByUserId(@Param("userId") int userId);
+    List<Role> findNotRoleListByUserIdNotPermission(@Param("userId") int userId);
 
     /**
      * 通过角色id删除角色权限关系表中数据

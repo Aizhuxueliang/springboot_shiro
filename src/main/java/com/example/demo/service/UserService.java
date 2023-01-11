@@ -38,9 +38,9 @@ public class UserService {
 
     public Map<String, Object> findRoleListByUserId(int roleId){
         //用戶具有的角色集合
-        List<Role> beRoleList = roleMapper.findRoleListByUserId1(roleId);
+        List<Role> beRoleList = roleMapper.findRoleListByUserIdNotPermission(roleId);
         //用戶没有的角色集合
-        List<Role> notRoleList = roleMapper.findNotRoleListByUserId(roleId);
+        List<Role> notRoleList = roleMapper.findNotRoleListByUserIdNotPermission(roleId);
         //所有集合
         Collection<Role> allRoleList = CollectionUtils.union(beRoleList, notRoleList);
         return this.resultMap("beRoleList", beRoleList, "notRoleList", notRoleList, "allRoleList", allRoleList);
