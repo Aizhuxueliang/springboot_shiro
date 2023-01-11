@@ -64,7 +64,7 @@ public class UserService {
         return this.resultMap("removeRolePermission", removeRolePermission, "removeRole", removeRole, "removeUserRole", removeUserRole);
     }
 
-    public Map addRole(Role role){
+    public HashMap addRole(Role role){
         int addRole = roleMapper.addRole(role);
         return this.resultMap("addRole", addRole, "",  "", "", "");
     }
@@ -89,8 +89,8 @@ public class UserService {
         return userMapper.delete(userId);
     }
 
-    public Map resultMap(String str1, Object obj1, String str2, Object obj2, String str3, Object obj3){
-        Map<String, Object> resultMap = new HashMap<>();
+    public HashMap resultMap(String str1, Object obj1, String str2, Object obj2, String str3, Object obj3){
+        HashMap<String, Object> resultMap = new HashMap<>();
         if (!"".equals(str1) || !"".equals(obj1))
             resultMap.put(str1, obj1);
         if (!"".equals(str2) || !"".equals(obj2))

@@ -5,19 +5,17 @@ import com.example.demo.entity.User;
 import com.example.demo.service.UserService;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.UsernamePasswordToken;
-import org.apache.shiro.authz.SimpleAuthorizationInfo;
 import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 /**
  * 用户控制层
  */
 @RestController
+@SuppressWarnings({"rawtypes"})
 @RequestMapping("user")
 public class UserCtrl {
 
@@ -123,18 +121,6 @@ public class UserCtrl {
         }
     }
 
-    /**
-     * 删除用户
-     *
-     * @param userId role
-     * @return resultMap
-     */
-    @RequestMapping(value = "/delete", method = RequestMethod.POST)
-    public Integer delete(Integer userId) {
-        System.out.println(userId);
-        int result = userService.delete(userId);
-        return result;
-    }
 
     /**
      * 新增用户
@@ -146,19 +132,4 @@ public class UserCtrl {
         userService.insertUser(user);
     }
 
-    /**
-     * 分页查询用户
-     *
-     * @param page page
-     * @return list
-     */
-    @RequestMapping(value="/page")
-    @ResponseBody
-    public List<User> page(Integer page){
-        int pageNow = page == null ? 1 : page;
-        int pageSize = 5;
-        int startRows = pageSize*(pageNow-1);
-        List<User> list = userService.queryPage(startRows);
-        return list;
-    }
 }
