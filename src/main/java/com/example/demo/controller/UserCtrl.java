@@ -8,14 +8,13 @@ import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.Map;
 
 /**
  * 用户控制层
  */
 @RestController
-@SuppressWarnings({"rawtypes"})
+//@SuppressWarnings({"rawtypes"})
 @RequestMapping("user")
 public class UserCtrl {
 

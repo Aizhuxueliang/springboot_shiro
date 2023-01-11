@@ -64,7 +64,7 @@ public class UserService {
         return this.resultMap("removeRolePermission", removeRolePermission, "removeRole", removeRole, "removeUserRole", removeUserRole);
     }
 
-    public HashMap addRole(Role role){
+    public Map addRole(Role role){
         int addRole = roleMapper.addRole(role);
         return this.resultMap("addRole", addRole, "",  "", "", "");
     }
