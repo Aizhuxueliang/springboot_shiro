@@ -36,18 +36,18 @@ public class UserService {
         return user;
     }
 
-    public Map findPermissionListByRoleId(int roleId){
+    public Map<String, Object> findPermissionListByRoleId(int roleId){
         //角色具有的权限集合
         List<Permission> bePermissionList = permissionMapper.findByPermissionListByRoleId(roleId);
         //角色没有的权限集合
-        Collection notPermissionList = permissionMapper.findNotPermissionListByRoleId(roleId);
+        Collection<Permission> notPermissionList = permissionMapper.findNotPermissionListByRoleId(roleId);
         //所有权限集合
         Collection<Permission> allPermissionList = CollectionUtils.union(bePermissionList, notPermissionList);
         return this.resultMap("bePermissionList", bePermissionList, "notPermissionList", notPermissionList, "allPermissionList", allPermissionList);
     }
 
     @Transactional(rollbackFor = {Exception.class})
-    public Map updateRolePermission(Role role){
+    public Map<String, Object> updateRolePermission(Role role){
         int removeRolePermission = roleMapper.removeRolePermissionByRoleId(role.getId());
         int addRolePermission = 0;
         if (role.getPermissionList().size()!=0 && role.getPermissionList()!=null){
@@ -57,14 +57,14 @@ public class UserService {
     }
 
     @Transactional(rollbackFor = {Exception.class})
-    public Map removeRole(Role role){
+    public Map<String, Object> removeRole(Role role){
         int removeRolePermission = roleMapper.removeRolePermissionByRoleId(role.getId());
         int removeRole = roleMapper.removeRoleByRoleId(role.getId());
         int removeUserRole = userMapper.removeUserRoleByRoleId(role.getId());
         return this.resultMap("removeRolePermission", removeRolePermission, "removeRole", removeRole, "removeUserRole", removeUserRole);
     }
 
-    public Map addRole(Role role){
+    public Map<String, Object> addRole(Role role){
         int addRole = roleMapper.addRole(role);
         return this.resultMap("addRole", addRole, "",  "", "", "");
     }
@@ -89,8 +89,8 @@ public class UserService {
         return userMapper.delete(userId);
     }
 
-    public HashMap resultMap(String str1, Object obj1, String str2, Object obj2, String str3, Object obj3){
-        HashMap<String, Object> resultMap = new HashMap<>();
+    public Map<String, Object> resultMap(String str1, Object obj1, String str2, Object obj2, String str3, Object obj3){
+        Map<String, Object> resultMap = new HashMap<>();
         if (!"".equals(str1) || !"".equals(obj1))
             resultMap.put(str1, obj1);
         if (!"".equals(str2) || !"".equals(obj2))

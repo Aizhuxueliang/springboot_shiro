@@ -14,7 +14,6 @@ import java.util.Map;
  * 用户控制层
  */
 @RestController
-//@SuppressWarnings({"rawtypes"})
 @RequestMapping("user")
 public class UserCtrl {
 
@@ -27,7 +26,7 @@ public class UserCtrl {
      * @return resultMap
      */
     @GetMapping("/need_login")
-    public Map needLogin() {
+    public Map<String, Object> needLogin() {
         return userService.resultMap("error", "温馨提示：请使用对应的账号登录", "",  "", "", "");
     }
 
@@ -39,7 +38,7 @@ public class UserCtrl {
      */
     @RequestMapping(value = "/login", method = RequestMethod.POST)
     @ResponseBody
-    public Map login(@RequestBody User user) {
+    public Map<String, Object> login(@RequestBody User user) {
         //拿到主体
         Subject subject = SecurityUtils.getSubject();
         try {
@@ -60,7 +59,7 @@ public class UserCtrl {
      */
     @RequestMapping(value = "/findPermissionListByRoleId", method = RequestMethod.POST)
     @ResponseBody
-    public Map findPermissionListByRoleId(@RequestBody Role role) {
+    public Map<String, Object> findPermissionListByRoleId(@RequestBody Role role) {
         try{
             return userService.findPermissionListByRoleId(role.getId());
         }catch (Exception e){
@@ -77,7 +76,7 @@ public class UserCtrl {
      */
     @RequestMapping(value = "/updateRolePermission", method = RequestMethod.POST)
     @ResponseBody
-    public Map updateRolePermission(@RequestBody Role role) {
+    public Map<String, Object> updateRolePermission(@RequestBody Role role) {
         try{
             return userService.updateRolePermission(role);
         }catch (Exception e){
@@ -94,7 +93,7 @@ public class UserCtrl {
      */
     @RequestMapping(value = "/removeRole", method = RequestMethod.POST)
     @ResponseBody
-    public Map removeRole(@RequestBody Role role) {
+    public Map<String, Object> removeRole(@RequestBody Role role) {
         try{
             return userService.removeRole(role);
         }catch (Exception e){
@@ -111,7 +110,7 @@ public class UserCtrl {
      */
     @RequestMapping(value = "/addRole", method = RequestMethod.POST)
     @ResponseBody
-    public Map addRole(@RequestBody Role role) {
+    public Map<String, Object> addRole(@RequestBody Role role) {
         try{
             return userService.addRole(role);
         }catch (Exception e){
