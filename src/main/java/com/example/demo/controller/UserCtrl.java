@@ -25,7 +25,7 @@ public class UserCtrl {
      *
      * @return resultMap
      */
-    @GetMapping("/need_login")
+    @GetMapping("/needLogin")
     public Map<String, Object> needLogin() {
         return userService.resultMap("error", "温馨提示：请使用对应的账号登录", "",  "", "", "");
     }
@@ -136,6 +136,22 @@ public class UserCtrl {
         }
     }
 
+    /**
+     * 更新用户具有的角色
+     *
+     * @param user user
+     * @return resultMap
+     */
+    @RequestMapping(value = "/updateUserRole", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> updateUserRole(@RequestBody User user) {
+        try{
+            return userService.updateUserRole(user);
+        }catch (Exception e){
+            e.printStackTrace();
+            return userService.resultMap("error", e.getMessage(), "",  "", "", "");
+        }
+    }
 
     /**
      * 新增用户

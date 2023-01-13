@@ -14,7 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.*;
 
 /**
- * 用户服务层
+ * 服务层
  */
 @Service
 public class UserService {
@@ -41,9 +41,19 @@ public class UserService {
         List<Role> beRoleList = roleMapper.findRoleListByUserIdNotPermission(roleId);
         //用戶没有的角色集合
         List<Role> notRoleList = roleMapper.findNotRoleListByUserIdNotPermission(roleId);
-        //所有集合
+        //所有角色集合
         Collection<Role> allRoleList = CollectionUtils.union(beRoleList, notRoleList);
         return this.resultMap("beRoleList", beRoleList, "notRoleList", notRoleList, "allRoleList", allRoleList);
+    }
+
+    @Transactional(rollbackFor = {Exception.class})
+    public Map<String, Object> updateUserRole(User user){
+        int removeUserRole = userMapper.removeUserRoleByUserId(user.getId());
+        int addUserRole = 0;
+        if (user.getRoleList().size()!=0 && user.getRoleList()!=null){
+            addUserRole = userMapper.addUserRole(user);
+        }
+        return this.resultMap("removeUserRole", removeUserRole, "addUserRole", addUserRole, "", "");
     }
 
     public Map<String, Object> findPermissionListByRoleId(int roleId){

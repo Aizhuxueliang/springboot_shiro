@@ -26,6 +26,10 @@
 		delete from user_role where role_id = #{id}
 	</delete>
 
+	<delete id="removeUserRoleByUserId" parameterType="int">
+		delete from user_role where user_id = #{id}
+	</delete>
+
 	<select id="queryPage" resultMap="resultUser" parameterType="Integer">
 		select * from user
 			order by id asc
@@ -37,20 +41,26 @@
 	</select>
 
     <insert id="insertUser" parameterType="com.example.demo.entity.User">
-		INSERT INTO user
-		(
-			id, username, password, create_time, salt
-		)
-		VALUES (
-			#{id},
+		insert into user(
+			username, password, create_time, salt
+		)values(
 			#{userName, jdbcType = VARCHAR},
 			#{password, jdbcType = VARCHAR},
 			#{createTime, jdbcType = TIMESTAMP}
-			#{salt, jdbcType = VARCHAR}
-		)
+			#{salt, jdbcType = VARCHAR})
 	</insert>
 
-    <delete id="delete" parameterType="int">
+	<insert id="addUserRole" parameterType="com.example.demo.entity.User" useGeneratedKeys="true" keyProperty="id">
+		<if test="roleList != null and roleList.size() != 0">
+			insert into user_role(
+				user_id,
+				role_id,
+				remark
+			)values<foreach collection="roleList" item="item" separator=",">(#{id}, #{item.id}, concat(#{username}, '是', #{item.description}))</foreach>
+		</if>
+	</insert>
+
+    <delete id="deleteUser" parameterType="int">
 		delete from user where id = #{id}
 	</delete>
 

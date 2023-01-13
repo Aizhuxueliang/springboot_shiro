@@ -4,12 +4,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-/**
- * @Description：用户表
- * @Author：chenyanbin
- * @Date：2021/1/2 11:41 下午
- * @Versiion：1.0
- */
 public class User {
     /**
      * 主键
@@ -34,7 +28,7 @@ public class User {
     /**
      * 角色集合
      */
-    private List<Role> roleList=new ArrayList<>();
+    private List<Role> roleList = new ArrayList<>();
 
     public int getId() {
         return id;
