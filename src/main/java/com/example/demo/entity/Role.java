@@ -14,7 +14,7 @@ public class Role {
      */
     private String name;
     /**
-     * 描述
+     * 角色描述
      */
     private String description;
     /**

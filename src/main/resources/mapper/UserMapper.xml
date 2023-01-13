@@ -8,8 +8,7 @@
         <result property="id" column="id" />
 		<result property="username" column="username" />
         <result property="password" column="password" />
-        <result property="createTime" column="create_time"/>
-		<result property="salt" column="salt"/>
+        <result property="reserve" column="reserve" />
     </resultMap>
 
     <select id="findUserByName" resultMap="resultUser" parameterType="String">
@@ -30,7 +29,7 @@
 		delete from user_role where user_id = #{id}
 	</delete>
 
-	<select id="queryPage" resultMap="resultUser" parameterType="Integer">
+	<select id="queryUserPage" resultMap="resultUser" parameterType="Integer">
 		select * from user
 			order by id asc
 			limit #{startRows},5
@@ -42,12 +41,11 @@
 
     <insert id="insertUser" parameterType="com.example.demo.entity.User">
 		insert into user(
-			username, password, create_time, salt
+			username, password, reserve
 		)values(
 			#{userName, jdbcType = VARCHAR},
 			#{password, jdbcType = VARCHAR},
-			#{createTime, jdbcType = TIMESTAMP}
-			#{salt, jdbcType = VARCHAR})
+			#{reserve, jdbcType = VARCHAR}
 	</insert>
 
 	<insert id="addUserRole" parameterType="com.example.demo.entity.User" useGeneratedKeys="true" keyProperty="id">

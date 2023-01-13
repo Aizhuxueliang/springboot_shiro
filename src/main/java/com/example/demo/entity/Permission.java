@@ -10,9 +10,9 @@ public class Permission {
      */
     private String name;
     /**
-     * 路径
+     * 权限描述
      */
-    private String url;
+    private String description;
 
     public int getId() {
         return id;
@@ -30,20 +30,12 @@ public class Permission {
         this.name = name;
     }
 
-    public String getUrl() {
-        return url;
+    public String getDescription() {
+        return description;
     }
 
-    public void setUrl(String url) {
-        this.url = url;
+    public void setDescription(String description) {
+        this.description = description;
     }
 
-    @Override
-    public String toString() {
-        return "Permission{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", url='" + url + '\'' +
-                '}';
-    }
 }

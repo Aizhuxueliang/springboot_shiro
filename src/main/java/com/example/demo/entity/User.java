@@ -18,13 +18,9 @@ public class User {
      */
     private String password;
     /**
-     * 创建时间
+     * 保留字段
      */
-    private Date createTime;
-    /**
-     * 密码加盐
-     */
-    private String salt;
+    private String reserve;
     /**
      * 角色集合
      */
@@ -54,20 +50,12 @@ public class User {
         this.password = password;
     }
 
-    public Date getCreateTime() {
-        return createTime;
+    public String getReserve() {
+        return reserve;
     }
 
-    public void setCreateTime(Date createTime) {
-        this.createTime = createTime;
-    }
-
-    public String getSalt() {
-        return salt;
-    }
-
-    public void setSalt(String salt) {
-        this.salt = salt;
+    public void setReserve(String reserve) {
+        this.reserve = reserve;
     }
 
     public List<Role> getRoleList() {
@@ -78,15 +66,4 @@ public class User {
         this.roleList = roleList;
     }
 
-    @Override
-    public String toString() {
-        return "User{" +
-                "id=" + id +
-                ", username='" + username + '\'' +
-                ", password='" + password + '\'' +
-                ", createTime=" + createTime +
-                ", salt='" + salt + '\'' +
-                ", roleList=" + roleList +
-                '}';
-    }
 }

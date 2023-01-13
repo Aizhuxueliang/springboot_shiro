@@ -7,14 +7,14 @@
     <resultMap id="permissionResult" type="com.example.demo.entity.Permission">
         <result property="id" column="id" />
 		<result property="name" column="name" />
-        <result property="url" column="url" />
+        <result property="description" column="description" />
     </resultMap>
 
     <select id="findByPermissionListByRoleId" resultMap="permissionResult" parameterType="int">
         select
             p.id id,
             p.name name,
-            p.url url
+            p.description description
         from
             role_permission rp
         left join permission p on
@@ -27,7 +27,7 @@
         select
             pp.id id,
             pp.name name,
-            pp.url url
+            pp.description description
         from
             permission pp
         where
@@ -46,7 +46,7 @@
         select
             p.id id,
             p.name name,
-            p.url url
+            p.description description
         from permission p
     </select>
 </mapper>

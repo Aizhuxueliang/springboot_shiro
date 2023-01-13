@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Map;
 
 /**
- * 用户控制层
+ * 控制层
  */
 @RestController
 @RequestMapping("user")
