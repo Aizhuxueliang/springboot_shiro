@@ -158,8 +158,8 @@ public class UserCtrl {
      *
      * @param user role
      */
-    @RequestMapping(value = "/insert", method = RequestMethod.POST)
-    public void insert(User user) {
+    @RequestMapping(value = "/insertUser", method = RequestMethod.POST)
+    public void insertUser(User user) {
         userService.insertUser(user);
     }
 

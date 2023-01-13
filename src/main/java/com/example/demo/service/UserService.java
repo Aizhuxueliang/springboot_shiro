@@ -89,24 +89,8 @@ public class UserService {
         return this.resultMap("addRole", addRole, "",  "", "", "");
     }
 
-    public List<User> queryPage(Integer startRows) {
-        return userMapper.queryPage(startRows);
-    }
-
-    public int getRowCount() {
-        return userMapper.getRowCount();
-    }
-
     public void insertUser(User user) {
         userMapper.insertUser(user);
-    }
-
-    public int modify(User user){
-        return userMapper.modify(user);
-    }
-
-    public int delete(int userId){
-        return userMapper.delete(userId);
     }
 
     public Map<String, Object> resultMap(String str1, Object obj1, String str2, Object obj2, String str3, Object obj3){

@@ -7,7 +7,7 @@ import org.apache.ibatis.annotations.Param;
 import java.util.List;
 
 /**
- * 用户业务层
+ * 业务层
  */
 @Mapper
 public interface UserMapper {
@@ -52,14 +52,7 @@ public interface UserMapper {
      */
     int addUserRole(User user);
 
-    List<User> queryPage(Integer startRows);
-
-    int getRowCount();
-
     int insertUser(User user);
 
-    int delete(int userId);
-
-    int modify(User user);
 
 }
