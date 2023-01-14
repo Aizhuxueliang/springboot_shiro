@@ -21,6 +21,12 @@ public class User {
      * 保留字段
      */
     private String reserve;
+
+    /**
+     * 保留字段1
+     */
+    private int reserve1;
+
     /**
      * 角色集合
      */
@@ -56,6 +62,14 @@ public class User {
 
     public void setReserve(String reserve) {
         this.reserve = reserve;
+    }
+
+    public int getReserve1() {
+        return reserve1;
+    }
+
+    public void setReserve1(int reserve1) {
+        this.reserve1 = reserve1;
     }
 
     public List<Role> getRoleList() {

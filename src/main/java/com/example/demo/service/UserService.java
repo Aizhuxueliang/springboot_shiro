@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
+import java.util.regex.Pattern;
 
 /**
  * 服务层
@@ -84,6 +85,18 @@ public class UserService {
         return this.resultMap("removeRolePermission", removeRolePermission, "removeRole", removeRole, "removeUserRole", removeUserRole);
     }
 
+    public Map<String, Object> queryUserListPage(User user){
+        user.setReserve(Integer.toString(user.getReserve1() == 0 ? 1 : user.getReserve1()));
+        //当前页页码
+        String pageNow = Pattern.compile("\\d+").matcher(user.getReserve()).find() ? user.getReserve() : "1";
+        //当前页第一行索引
+        String startIndex = Integer.toString(5*(Integer.parseInt(pageNow) - 1));
+        user.setReserve1(Integer.parseInt(startIndex));
+        List<User> userListPage = userMapper.queryUserListPage(user);
+        int userRowCount = userMapper.getUserRowCount(user);
+        return this.resultMap("userListPage", userListPage, "userRowCount",  userRowCount, "", "");
+    }
+
     public Map<String, Object> addRole(Role role){
         int addRole = roleMapper.addRole(role);
         return this.resultMap("addRole", addRole, "",  "", "", "");
@@ -101,6 +114,7 @@ public class UserService {
             resultMap.put(str2, obj2);
         if (!"".equals(str3) || !"".equals(obj3))
             resultMap.put(str3, obj3);
+        //TODO 把resultMap保存到数据库里面
         return resultMap;
     }
 

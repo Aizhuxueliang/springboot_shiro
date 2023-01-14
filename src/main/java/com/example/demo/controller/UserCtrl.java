@@ -154,6 +154,23 @@ public class UserCtrl {
     }
 
     /**
+     * 根据用户提供的条件分页查询用户
+     *
+     * @param user user
+     * @return resultMap
+     */
+    @RequestMapping(value = "/queryUserListPage", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> queryUserListPage(@RequestBody User user) {
+        try{
+            return userService.queryUserListPage(user);
+        }catch (Exception e){
+            e.printStackTrace();
+            return userService.resultMap("error", e.getMessage(), "",  "", "", "");
+        }
+    }
+
+    /**
      * 新增用户
      *
      * @param user role

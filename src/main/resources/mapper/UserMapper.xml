@@ -7,18 +7,14 @@
     <resultMap id="resultUser" type="com.example.demo.entity.User">
         <result property="id" column="id" />
 		<result property="username" column="username" />
-        <result property="password" column="password" />
-        <result property="reserve" column="reserve" />
     </resultMap>
 
     <select id="findUserByName" resultMap="resultUser" parameterType="String">
-		select * from user where username = #{userName}
-	</select>
-
-	<select id="findUserByLikeName" resultMap="resultUser" parameterType="String">
-		select * from user
-		where username like concat(concat('%',#{userName}),'%')
-		order by id asc
+		select
+			id,
+			username
+		from user where
+		    username = #{userName}
 	</select>
 
 	<delete id="removeUserRoleByRoleId" parameterType="int">
@@ -29,19 +25,40 @@
 		delete from user_role where user_id = #{id}
 	</delete>
 
-	<select id="queryUserPage" resultMap="resultUser" parameterType="Integer">
-		select * from user
-			order by id asc
-			limit #{startRows},5
+	<select id="queryUserListPage" resultMap="resultUser" parameterType="com.example.demo.entity.User">
+		select
+			id,
+			username
+		from user
+		<where>
+			<if test="id != 0 and id !=null">
+				and id = #{id}
+			</if>
+			<if test="username != null and username !=''">
+				and username like concat(concat('%',#{username}),'%')
+			</if>
+		</where>
+			order by id desc
+			limit #{reserve1},5
 	</select>
 
-	<select id="getRowCount" resultType="Integer">
+	<select id="getUserRowCount" parameterType="com.example.demo.entity.User" resultType="int">
 		select count(*) from user
+		<where>
+			<if test="id != 0 and id != null">
+				and id = #{id}
+			</if>
+			<if test="username != null and username !=''">
+				and username like concat(concat('%',#{username}),'%')
+			</if>
+		</where>
 	</select>
 
     <insert id="insertUser" parameterType="com.example.demo.entity.User">
 		insert into user(
-			username, password, reserve
+			username,
+			password,
+			reserve
 		)values(
 			#{userName, jdbcType = VARCHAR},
 			#{password, jdbcType = VARCHAR},
@@ -53,7 +70,7 @@
 			insert into user_role(
 				user_id,
 				role_id,
-				remark
+				reserve
 			)values<foreach collection="roleList" item="item" separator=",">(#{id}, #{item.id}, concat(#{username}, '是', #{item.description}))</foreach>
 		</if>
 	</insert>
@@ -64,8 +81,7 @@
 
     <update id="modify" parameterType="com.example.demo.entity.User">
 		update user set
-		    user.password = #{password},
-		    user.userName = #{username},
+		    user.password = #{password}
 		where
 			user.id = #{id}
 	</update>

@@ -21,14 +21,6 @@ public interface UserMapper {
     User findUserByName(@Param("userName") String userName);
 
     /**
-     * 根据用户名模糊查询用户
-     *
-     * @param userName userName
-     * @return List<User>
-     */
-    List<User> findUserByLikeName(@Param("userName") String userName);
-
-    /**
      * 通过角色id删除用户角色关系表中数据
      *
      * @param id roleId
@@ -51,6 +43,24 @@ public interface UserMapper {
      * @return int
      */
     int addUserRole(User user);
+
+
+    /**
+     * 根据用户信息分页查询用户
+     *
+     * @param user user
+     * @return List<User>
+     */
+    List<User> queryUserListPage(User user);
+
+    /**
+     * 统计用户个数
+     *
+     * @param user user
+     * @return int
+     */
+    int getUserRowCount(User user);
+
 
     int insertUser(User user);
 
