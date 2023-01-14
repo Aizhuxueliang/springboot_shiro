@@ -86,12 +86,11 @@ public class UserService {
     }
 
     public Map<String, Object> queryUserListPage(User user){
-        user.setReserve(Integer.toString(user.getReserve1() == 0 ? 1 : user.getReserve1()));
         //当前页页码
+        user.setReserve(Integer.toString(user.getReserve1() == 0 ? 1 : user.getReserve1()));
         String pageNow = Pattern.compile("\\d+").matcher(user.getReserve()).find() ? user.getReserve() : "1";
         //当前页第一行索引
-        String startIndex = Integer.toString(5*(Integer.parseInt(pageNow) - 1));
-        user.setReserve1(Integer.parseInt(startIndex));
+        user.setReserve1(5*(Integer.parseInt(pageNow) - 1));
         List<User> userListPage = userMapper.queryUserListPage(user);
         int userRowCount = userMapper.getUserRowCount(user);
         return this.resultMap("userListPage", userListPage, "userRowCount",  userRowCount, "", "");
