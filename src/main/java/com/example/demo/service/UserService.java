@@ -39,9 +39,9 @@ public class UserService {
 
     public Map<String, Object> findRoleListByUserId(int userId){
         //用戶具有的角色集合
-        List<Map<String, Object>> beRoleList = roleMapper.findRoleListByUserIdNotPermission(userId).stream().map(role -> this.resultMap("id", role.getId(), "name", role.getName(), "description", role.getDescription())).collect(Collectors.toList());
+        List<Role> beRoleList = roleMapper.findRoleListByUserIdNotPermission(userId);
         //用戶没有的角色集合
-        List<Map<String, Object>> notRoleList = roleMapper.findNotRoleListByUserIdNotPermission(userId).stream().map(role -> this.resultMap("id", role.getId(), "name", role.getName(), "description", role.getDescription())).collect(Collectors.toList());
+        List<Role> notRoleList = roleMapper.findNotRoleListByUserIdNotPermission(userId);
         //所有角色集合
         Collection<?> allRoleList = CollectionUtils.union(beRoleList, notRoleList);
         return this.resultMap("beRoleList", beRoleList, "notRoleList", notRoleList, "allRoleList", allRoleList);
@@ -90,7 +90,7 @@ public class UserService {
         int pageNow = user.getReserve1() < 1 ? 1 : user.getReserve1();
         //当前页第一行索引
         user.setReserve1(5*(pageNow - 1));
-        List<Map<String, Object>> userListPage = userMapper.queryUserListPage(user).stream().map(user1 -> this.resultMap("id", user1.getId(), "username", user1.getUsername(),"", "")).collect(Collectors.toList());
+        List<User> userListPage = userMapper.queryUserListPage(user);
         int userRowCount = userMapper.getUserRowCount(user);
         return this.resultMap("userListPage", userListPage, "userRowCount",  userRowCount, "", "");
     }

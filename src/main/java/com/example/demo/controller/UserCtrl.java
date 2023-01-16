@@ -14,6 +14,7 @@ import java.util.Map;
  * 控制层
  */
 @RestController
+@CrossOrigin
 @RequestMapping("user")
 public class UserCtrl {
 

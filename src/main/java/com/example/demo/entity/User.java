@@ -1,5 +1,7 @@
 package com.example.demo.entity;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -25,6 +27,7 @@ public class User {
     /**
      * 保留字段1
      */
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private int reserve1;
 
     /**
