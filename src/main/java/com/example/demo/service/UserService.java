@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
-import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 /**
  * 服务层
@@ -37,13 +37,13 @@ public class UserService {
         return user;
     }
 
-    public Map<String, Object> findRoleListByUserId(int roleId){
+    public Map<String, Object> findRoleListByUserId(int userId){
         //用戶具有的角色集合
-        List<Role> beRoleList = roleMapper.findRoleListByUserIdNotPermission(roleId);
+        List<Map<String, Object>> beRoleList = roleMapper.findRoleListByUserIdNotPermission(userId).stream().map(role -> this.resultMap("id", role.getId(), "name", role.getName(), "description", role.getDescription())).collect(Collectors.toList());
         //用戶没有的角色集合
-        List<Role> notRoleList = roleMapper.findNotRoleListByUserIdNotPermission(roleId);
+        List<Map<String, Object>> notRoleList = roleMapper.findNotRoleListByUserIdNotPermission(userId).stream().map(role -> this.resultMap("id", role.getId(), "name", role.getName(), "description", role.getDescription())).collect(Collectors.toList());
         //所有角色集合
-        Collection<Role> allRoleList = CollectionUtils.union(beRoleList, notRoleList);
+        Collection<?> allRoleList = CollectionUtils.union(beRoleList, notRoleList);
         return this.resultMap("beRoleList", beRoleList, "notRoleList", notRoleList, "allRoleList", allRoleList);
     }
 
@@ -63,7 +63,7 @@ public class UserService {
         //角色没有的权限集合
         List<Permission> notPermissionList = permissionMapper.findNotPermissionListByRoleId(roleId);
         //所有权限集合
-        Collection<Permission> allPermissionList = CollectionUtils.union(bePermissionList, notPermissionList);
+        Collection<?> allPermissionList = CollectionUtils.union(bePermissionList, notPermissionList);
         return this.resultMap("bePermissionList", bePermissionList, "notPermissionList", notPermissionList, "allPermissionList", allPermissionList);
     }
 
@@ -87,11 +87,10 @@ public class UserService {
 
     public Map<String, Object> queryUserListPage(User user){
         //当前页页码
-        user.setReserve(Integer.toString(user.getReserve1() == 0 ? 1 : user.getReserve1()));
-        String pageNow = Pattern.compile("\\d+").matcher(user.getReserve()).find() ? user.getReserve() : "1";
+        int pageNow = user.getReserve1() < 1 ? 1 : user.getReserve1();
         //当前页第一行索引
-        user.setReserve1(5*(Integer.parseInt(pageNow) - 1));
-        List<User> userListPage = userMapper.queryUserListPage(user);
+        user.setReserve1(5*(pageNow - 1));
+        List<Map<String, Object>> userListPage = userMapper.queryUserListPage(user).stream().map(user1 -> this.resultMap("id", user1.getId(), "username", user1.getUsername(),"", "")).collect(Collectors.toList());
         int userRowCount = userMapper.getUserRowCount(user);
         return this.resultMap("userListPage", userListPage, "userRowCount",  userRowCount, "", "");
     }
@@ -113,7 +112,6 @@ public class UserService {
             resultMap.put(str2, obj2);
         if (!"".equals(str3) || !"".equals(obj3))
             resultMap.put(str3, obj3);
-        //TODO 把resultMap保存到数据库里面
         return resultMap;
     }
 

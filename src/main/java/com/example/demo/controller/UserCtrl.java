@@ -37,7 +37,6 @@ public class UserCtrl {
      * @return resultMap
      */
     @RequestMapping(value = "/login", method = RequestMethod.POST)
-    @ResponseBody
     public Map<String, Object> login(@RequestBody User user) {
         //拿到主体
         Subject subject = SecurityUtils.getSubject();
@@ -58,7 +57,6 @@ public class UserCtrl {
      * @return resultMap
      */
     @RequestMapping(value = "/findRoleListByUserId", method = RequestMethod.POST)
-    @ResponseBody
     public Map<String, Object> findRoleListByUserId(@RequestBody User user) {
         try{
             return userService.findRoleListByUserId(user.getId());
@@ -75,7 +73,6 @@ public class UserCtrl {
      * @return resultMap
      */
     @RequestMapping(value = "/findPermissionListByRoleId", method = RequestMethod.POST)
-    @ResponseBody
     public Map<String, Object> findPermissionListByRoleId(@RequestBody Role role) {
         try{
             return userService.findPermissionListByRoleId(role.getId());
@@ -92,7 +89,6 @@ public class UserCtrl {
      * @return resultMap
      */
     @RequestMapping(value = "/updateRolePermission", method = RequestMethod.POST)
-    @ResponseBody
     public Map<String, Object> updateRolePermission(@RequestBody Role role) {
         try{
             return userService.updateRolePermission(role);
@@ -109,7 +105,6 @@ public class UserCtrl {
      * @return resultMap
      */
     @RequestMapping(value = "/removeRole", method = RequestMethod.POST)
-    @ResponseBody
     public Map<String, Object> removeRole(@RequestBody Role role) {
         try{
             return userService.removeRole(role);
@@ -126,7 +121,6 @@ public class UserCtrl {
      * @return resultMap
      */
     @RequestMapping(value = "/addRole", method = RequestMethod.POST)
-    @ResponseBody
     public Map<String, Object> addRole(@RequestBody Role role) {
         try{
             return userService.addRole(role);
@@ -143,7 +137,6 @@ public class UserCtrl {
      * @return resultMap
      */
     @RequestMapping(value = "/updateUserRole", method = RequestMethod.POST)
-    @ResponseBody
     public Map<String, Object> updateUserRole(@RequestBody User user) {
         try{
             return userService.updateUserRole(user);
@@ -160,7 +153,6 @@ public class UserCtrl {
      * @return resultMap
      */
     @RequestMapping(value = "/queryUserListPage", method = RequestMethod.POST)
-    @ResponseBody
     public Map<String, Object> queryUserListPage(@RequestBody User user) {
         try{
             return userService.queryUserListPage(user);
