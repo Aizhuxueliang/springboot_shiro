@@ -82,9 +82,10 @@
 			let userData = Qs.stringify({
                 id: this.id
             });
+			axios.defaults.headers.post['Content-Type'] = 'application/json';
 			axios({
                 method: 'post',
-                url: '/user/queryUserListPage',
+                url: 'http://127.0.0.1:8819/user/queryUserListPage',
                 data: userData
             }).then(response => {
                 this.tableData = response.data;
@@ -108,7 +109,7 @@
 
   })
 </script>
-  <style>
+<style>
 
-  </style>
+</style>
 </html>

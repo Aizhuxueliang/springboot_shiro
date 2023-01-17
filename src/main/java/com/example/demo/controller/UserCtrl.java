@@ -14,8 +14,7 @@ import java.util.Map;
  * 控制层
  */
 @RestController
-@CrossOrigin
-@RequestMapping("user")
+@RequestMapping("/user")
 public class UserCtrl {
 
     @Autowired
@@ -44,7 +43,9 @@ public class UserCtrl {
         try {
             UsernamePasswordToken usernamePasswordToken = new UsernamePasswordToken(user.getUsername(), user.getPassword());
             subject.login(usernamePasswordToken);
-            return userService.resultMap("permissions", subject.getSession().getAttribute("permissions"), "token",  subject.getSession().getId(), "", "");
+            Object permissions = subject.getSession().getAttribute("permissions");
+            subject.getSession().removeAttribute("permissions");
+            return userService.resultMap("permissions", permissions, "token",  subject.getSession().getId(), "", "");
         }catch (Exception e){
             e.printStackTrace();
             return userService.resultMap("error", e.getMessage(), "",  "", "", "");

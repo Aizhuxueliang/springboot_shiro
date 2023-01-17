@@ -5,6 +5,7 @@ import org.apache.shiro.mgt.SecurityManager;
 import org.apache.shiro.session.mgt.SessionManager;
 import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
 import org.apache.shiro.web.mgt.DefaultWebSecurityManager;
+import org.apache.shiro.web.session.mgt.DefaultWebSessionManager;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -20,12 +21,12 @@ public class ShiroConfig {
         //设置SecurityManager
         shiroFilterFactoryBean.setSecurityManager(securityManager);
         //如果访问需要登录的某个接口，却没有登录，则调用此接口(如果不是前后端分离，则跳转页面)
-        shiroFilterFactoryBean.setLoginUrl("/user/need_login");
+        //shiroFilterFactoryBean.setLoginUrl("/needLogin.html");
         //shiroFilterFactoryBean.setLoginUrl("/xxx.jsp");
         //登录成功后，跳转的链接，若前后端分离，没必要设置这个
         //shiroFilterFactoryBean.setSuccessUrl("");
         //登录成功，未授权会调用此方法
-        shiroFilterFactoryBean.setUnauthorizedUrl("/user/not_permit");
+        //shiroFilterFactoryBean.setUnauthorizedUrl("/user/not_permit");
         //拦截路径，必须使用:LinkedHashMap，要不然拦截效果会时有时无，因为使用的是无序的Map
         Map<String, String> filterChainDefinitionMap = new LinkedHashMap<>();
         //key=正则表达式路径，value=org.apache.shiro.web.filter.mgt.DefaultFilter
@@ -38,7 +39,7 @@ public class ShiroConfig {
         //管理员角色才能访问
         //filterChainDefinitionMap.put("/admin/**", "roles[admin]");
         //有编辑权限才能访问
-        filterChainDefinitionMap.put("/user/update", "perms[video_update]");
+        //filterChainDefinitionMap.put("/user/update", "perms[video_update]");
         //authc：url必须通过认证才可以访问
         //anon：url可以匿名访问
         //过滤链是顺序执行，从上而下，一般把/**，放到最下面
@@ -54,6 +55,16 @@ public class ShiroConfig {
         securityManager.setSessionManager(sessionManager());
         securityManager.setRealm(userRealm());
         return securityManager;
+    }
+
+    @Bean
+    public DefaultWebSessionManager sessionManager() {
+        DefaultWebSessionManager sessionManager = new DefaultWebSessionManager();
+        //超时时间，默认 30分钟，会话超时，单位毫秒
+        sessionManager.setGlobalSessionTimeout(200000);
+        // 去掉shiro登录时url里的JSESSIONID
+        sessionManager.setSessionIdUrlRewritingEnabled(false);
+        return sessionManager;
     }
 
     /**
@@ -84,16 +95,4 @@ public class ShiroConfig {
         return hashedCredentialsMatcher;
     }
 
-    /**
-     * 自定义SessionManager
-     *
-     * @return
-     */
-    @Bean
-    public SessionManager sessionManager() {
-        UserSessionManager userSessionManager = new UserSessionManager();
-        //超时时间，默认 30分钟，会话超时，单位毫秒
-//        customSessionManager.setGlobalSessionTimeout(200000);
-        return userSessionManager;
-    }
 }
