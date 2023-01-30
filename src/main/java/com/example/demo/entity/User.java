@@ -1,10 +1,17 @@
 package com.example.demo.entity;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.*;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+@Data
+@ToString
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class User {
     /**
      * 主键
@@ -27,58 +34,18 @@ public class User {
      * 保留字段1
      */
     private int reserve1;
-
     /**
      * 角色集合
      */
     private List<Role> roleList = new ArrayList<>();
 
-    public int getId() {
-        return id;
+    public User(String json) throws IOException {
+        User user = new ObjectMapper().readValue(json,User.class);
+        this.id = user.getId();
+        this.username = user.getUsername();
+        this.password = user.getPassword();
+        this.reserve = user.getReserve();
+        this.reserve1 = user.getReserve1();
+        this.roleList = user.getRoleList();
     }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public String getReserve() {
-        return reserve;
-    }
-
-    public void setReserve(String reserve) {
-        this.reserve = reserve;
-    }
-
-    public int getReserve1() {
-        return reserve1;
-    }
-
-    public void setReserve1(int reserve1) {
-        this.reserve1 = reserve1;
-    }
-
-    public List<Role> getRoleList() {
-        return roleList;
-    }
-
-    public void setRoleList(List<Role> roleList) {
-        this.roleList = roleList;
-    }
-
 }

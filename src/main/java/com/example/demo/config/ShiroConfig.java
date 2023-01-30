@@ -21,8 +21,7 @@ public class ShiroConfig {
         //设置SecurityManager
         shiroFilterFactoryBean.setSecurityManager(securityManager);
         //如果访问需要登录的某个接口，却没有登录，则调用此接口(如果不是前后端分离，则跳转页面)
-        //shiroFilterFactoryBean.setLoginUrl("/needLogin.html");
-        //shiroFilterFactoryBean.setLoginUrl("/xxx.jsp");
+        //shiroFilterFactoryBean.setLoginUrl("/UserManager.html");
         //登录成功后，跳转的链接，若前后端分离，没必要设置这个
         //shiroFilterFactoryBean.setSuccessUrl("");
         //登录成功，未授权会调用此方法
@@ -31,9 +30,10 @@ public class ShiroConfig {
         Map<String, String> filterChainDefinitionMap = new LinkedHashMap<>();
         //key=正则表达式路径，value=org.apache.shiro.web.filter.mgt.DefaultFilter
         //退出过滤器
-        filterChainDefinitionMap.put("/logout", "logout");
+        //filterChainDefinitionMap.put("/logout", "logout");
         //匿名可以访问，游客模式
-        filterChainDefinitionMap.put("/user/**", "anon");
+        //filterChainDefinitionMap.put("*", "anon");
+        //filterChainDefinitionMap.put("/user/**", "anon");
         //登录用户才可以访问
         //filterChainDefinitionMap.put("/authc/**", "authc");
         //管理员角色才能访问
@@ -43,7 +43,7 @@ public class ShiroConfig {
         //authc：url必须通过认证才可以访问
         //anon：url可以匿名访问
         //过滤链是顺序执行，从上而下，一般把/**，放到最下面
-        filterChainDefinitionMap.put("/**", "authc");
+        //filterChainDefinitionMap.put("/**", "authc");
         shiroFilterFactoryBean.setFilterChainDefinitionMap(filterChainDefinitionMap);
         return shiroFilterFactoryBean;
     }
@@ -55,16 +55,6 @@ public class ShiroConfig {
         securityManager.setSessionManager(sessionManager());
         securityManager.setRealm(userRealm());
         return securityManager;
-    }
-
-    @Bean
-    public DefaultWebSessionManager sessionManager() {
-        DefaultWebSessionManager sessionManager = new DefaultWebSessionManager();
-        //超时时间，默认 30分钟，会话超时，单位毫秒
-        sessionManager.setGlobalSessionTimeout(200000);
-        // 去掉shiro登录时url里的JSESSIONID
-        sessionManager.setSessionIdUrlRewritingEnabled(false);
-        return sessionManager;
     }
 
     /**
@@ -95,4 +85,16 @@ public class ShiroConfig {
         return hashedCredentialsMatcher;
     }
 
+    /**
+     * 自定义SessionManager
+     *
+     * @return
+     */
+    @Bean
+    public SessionManager sessionManager() {
+        UserSessionManager userSessionManager = new UserSessionManager();
+        //超时时间，默认 30分钟，会话超时，单位毫秒
+//        customSessionManager.setGlobalSessionTimeout(200000);
+        return userSessionManager;
+    }
 }
