@@ -54,9 +54,13 @@
             </el-row>
 
             <el-dialog title="分配角色" :visible.sync="dialogEditUser" :before-close="handleClose">
-                <el-transfer v-model="transferValue" :data="transferData" :titles="['待分配角色', '已分配角色']"></el-transfer>
+                <el-transfer
+                        v-model="transferValue"
+                        :data="transferData"
+                        :titles="['待分配角色', '已分配角色']">
+                </el-transfer>
                 <span slot="footer" class="dialog-footer">
-			        <el-button @click="assignRoles">取 消</el-button>
+			        <el-button @click="handleClose">取 消</el-button>
 			        <el-button type="primary" @click="assignRoles">确 定</el-button>
 		        </span>
             </el-dialog>
@@ -65,7 +69,11 @@
 
         <el-tab-pane label="角色设置">
 
-            <span>角色设置</span>
+            <el-button
+                    plain
+                    @click="handleClose1">
+                关闭
+            </el-button>
 
         </el-tab-pane>
 
@@ -95,8 +103,11 @@
             hidePageFlag: true,
             // 角色弹框
             dialogEditUser: false,// 分配角色弹框
-
-            username: 'lao'
+            // 用户信息
+            allRoleList: [],
+            id: 0,
+            username: '',
+            roleList: []
         },
         methods: {
             queryUserListPage() {
@@ -141,6 +152,9 @@
                     for(let item of response.data.beRoleList){
                         this.transferValue.push(item.id);
                     }
+                    this.id = row.id;
+                    this.username = row.username;
+                    this.allRoleList = response.data.allRoleList;
                     this.dialogEditUser = true;
                 }).catch(error => {
                     console.log(error);
@@ -148,14 +162,63 @@
                 });
             },
             assignRoles() {
-                this.dialogEditUser = false;
-                this.transferData = [];
-                this.transferValue = [];
+                for(let item of this.allRoleList){
+                    for(let i = 0, len = this.transferValue.length; i < len; i++ ){
+                        if (this.transferValue[i] == item.id) {
+                            this.roleList.push(item);
+                        }
+                    }
+                }
+                axios.defaults.headers.post['Content-Type'] = 'application/json';
+                axios({
+                    method: 'post',
+                    url: '/user/updateUserRole',
+                    data: JSON.stringify({
+                        id: this.id,
+                        username: this.username,
+                        roleList: this.roleList
+                    })
+                }).then(response => {
+                    if (response.data.removeUserRole >= 0 && response.data.addUserRole >= 0) {
+                        this.dialogEditUser = false;
+                        ELEMENT.Notification({
+                            title: '更新成功',
+                            message: '为用户'+this.username+'，分配角色成功！',
+                            type: 'success',
+                            position: 'top-right',
+                            showClose: false,
+                            offset: 100
+                        });
+                    }
+                    this.id = 0;
+                    this.username = '';
+                    this.allRoleList = [];
+                    this.roleList = [];
+                    this.transferData = [];
+                    this.transferValue = [];
+                    console.log(response.data);
+                }).catch(error => {
+                    console.log(error);
+                });
+
             },
             handleDeleteUser(index, row) {
                 this.ruleForm = Object.assign({}, row, index); //这句是关键！！！
             },
-            handleClose(done) {
+            handleClose() {
+                ELEMENT.Message({
+                    message: '取消操作，系统不会保留任何更改',
+                    type:'warning'
+                });
+                this.dialogEditUser = false;
+                this.id = 0;
+                this.username = '';
+                this.allRoleList = [];
+                this.roleList = [];
+                this.transferData = [];
+                this.transferValue = [];
+            },
+            handleClose1() {
                 ELEMENT.MessageBox.confirm('此操作将永久删除该文件, 是否继续?', '提示', {
                     confirmButtonText: '确定',
                     cancelButtonText: '取消',
@@ -176,6 +239,11 @@
         justify-content: flex-end;
         align-items: center;
         height: 60px;
+    }
+    .el-transfer {
+        display: flex;
+        justify-content: center;
+        align-items: center;
     }
 </style>
 </html>

@@ -70,7 +70,7 @@
 			insert into user_role(
 				user_id,
 				role_id,
-				reserve
+				remark
 			)values<foreach collection="roleList" item="item" separator=",">(#{id}, #{item.id}, concat(#{username}, '是', #{item.description}))</foreach>
 		</if>
 	</insert>
