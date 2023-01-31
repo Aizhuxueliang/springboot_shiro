@@ -7,35 +7,51 @@
 </head>
 <body>
 <div id="app">
+    <el-tabs :tab-position="tabPosition">
+        <el-tab-pane label="用户管理">
+            <el-row type="flex" justify="center">
+                <el-col :span="18">
+                    <el-button :plain="true" @click="queryUserListPage">分页查询用户</el-button>
+                    <el-table
+                            :data="tableData"
+                            border
+                            highlight-current-row
+                            style="width: 100%">
+                        <el-table-column
+                                prop="id"
+                                label="用户ID">
+                        </el-table-column>
+                        <el-table-column
+                                prop="username"
+                                label="用户姓名">
+                        </el-table-column>
+                    </el-table>
+                    <el-pagination
+                            layout="total, prev, pager, next, jumper"
+                            :total="userRowCount"
+                            :page-size="5"
+                            :current-page.sync="currentPage"
+                            @current-change="queryUserListPage"
+                            background>
+                    </el-pagination>
+                </el-col>
+            </el-row>
+        </el-tab-pane>
 
-    <template>
-        <el-button :plain="true" @click="queryUserListPage">分页查询用户</el-button>
-    </template>
-    <template>
-        <el-transfer v-model="value1" :data="data1"></el-transfer>
-    </template>
-    <el-button type="text" @click="dialogVisible = true">点击打开 Dialog</el-button>
-    <el-dialog title="提示" :visible.sync="dialogVisible" width="30%" :before-close="handleClose">
-        <span>这是一段信息</span>
-        <span slot="footer" class="dialog-footer">
+        <el-tab-pane label="角色管理">
+            <el-transfer v-model="value1" :data="data1"></el-transfer>
+            <el-button type="text" @click="dialogVisible = true">点击打开 Dialog</el-button>
+            <el-dialog title="提示" :visible.sync="dialogVisible" width="30%" :before-close="handleClose">
+                <span>这是一段信息</span>
+                <span slot="footer" class="dialog-footer">
 			<el-button @click="dialogVisible = false">取 消</el-button>
 			<el-button type="primary" @click="dialogVisible = false">确 定</el-button>
 		</span>
-    </el-dialog>
-    <el-table
-            :data="tableData"
-            border
-            highlight-current-row
-            style="width: 100%">
-        <el-table-column
-                prop="id"
-                label="用户ID">
-        </el-table-column>
-        <el-table-column
-                prop="username"
-                label="用户姓名">
-        </el-table-column>
-    </el-table>
+            </el-dialog>
+        </el-tab-pane>
+
+    </el-tabs>
+
 </div>
 
 </body>
@@ -68,6 +84,9 @@
             }],
             dialogVisible: false,
             tableData: [],
+            tabPosition: 'top',
+            userRowCount: 5,
+            currentPage: 1,
             username: 'lao'
         },
         methods: {
@@ -78,10 +97,12 @@
                     method: 'post',
                     url: '/user/queryUserListPage',
                     data: JSON.stringify({
-                        username: this.username
+                        username: this.username,
+                        reserve1: this.currentPage
                     })
                 }).then(response => {
                     this.tableData = response.data.userListPage;
+                    this.userRowCount = response.data.userRowCount;
                     console.log(response.data);
                 }).catch(error => {
                     console.log(error);
@@ -103,6 +124,11 @@
     })
 </script>
 <style>
-
+    .el-pagination {
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+        height: 60px;
+    }
 </style>
 </html>
