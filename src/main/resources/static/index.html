@@ -11,12 +11,35 @@
         <el-tab-pane label="用户设置">
             <el-row type="flex" justify="center">
                 <el-col :span="18">
-                    <el-button :plain="true" @click="queryUserListPage">分页查询用户</el-button>
+                    <div class="handle-area">
+                        <div class="demo-input">
+                            <span>用户ID:</span>
+                            <el-input
+                                    v-model="id"
+                                    placeholder="请输入用户ID"
+                                    type="number"
+                                    size="medium"
+                                    clearable></el-input>
+                            <span>用户名称:</span>
+                            <el-input
+                                    v-model="username"
+                                    placeholder="请输入用户名称"
+                                    size="medium"
+                                    clearable></el-input>
+                            <el-button
+                                    :plain="true"
+                                    @click="queryUserListPage"
+                                    size="medium">查询用户</el-button>
+                        </div>
+                        <el-button
+                                :plain="true"
+                                @click="queryUserListPage"
+                                size="medium">新建用户</el-button>
+                    </div>
                     <el-table
                             :data="tableData"
                             border
-                            highlight-current-row
-                            style="width: 100%">
+                            highlight-current-row>
                         <el-table-column
                                 prop="id"
                                 label="用户ID">
@@ -105,7 +128,7 @@
             dialogEditUser: false,// 分配角色弹框
             // 用户信息
             allRoleList: [],
-            id: 0,
+            id: null,
             username: '',
             roleList: []
         },
@@ -116,6 +139,7 @@
                     method: 'post',
                     url: '/user/queryUserListPage',
                     data: JSON.stringify({
+                        id: this.id,
                         username: this.username,
                         reserve1: this.currentPage
                     })
@@ -276,6 +300,25 @@
         display: flex;
         justify-content: center;
         align-items: center;
+    }
+    .handle-area {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        height: 70px;
+        flex-wrap: nowrap;
+    }
+    .demo-input {
+        display: flex;
+        align-items: center;
+    }
+    .demo-input span {
+        white-space: nowrap;
+        display: flex;
+        flex-direction: row-reverse;
+    }
+    .demo-input .el-input {
+        width: auto;
     }
 </style>
 </html>

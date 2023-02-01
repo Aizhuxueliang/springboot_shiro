@@ -31,7 +31,7 @@
 			username
 		from user
 		<where>
-			<if test="id != 0 and id !=null">
+			<if test="id > 0 and id !=null">
 				and id = #{id}
 			</if>
 			<if test="username != null and username !=''">
@@ -45,7 +45,7 @@
 	<select id="getUserRowCount" parameterType="com.example.demo.entity.User" resultType="int">
 		select count(*) from user
 		<where>
-			<if test="id != 0 and id != null">
+			<if test="id > 0 and id != null">
 				and id = #{id}
 			</if>
 			<if test="username != null and username !=''">
