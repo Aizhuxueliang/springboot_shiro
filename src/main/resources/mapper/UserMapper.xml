@@ -75,7 +75,7 @@
 		</if>
 	</insert>
 
-    <delete id="deleteUser" parameterType="int">
+    <delete id="removeUserByUserId" parameterType="int">
 		delete from user where id = #{id}
 	</delete>
 

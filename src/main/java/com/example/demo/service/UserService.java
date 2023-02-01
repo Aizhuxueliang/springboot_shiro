@@ -100,6 +100,13 @@ public class UserService {
         return this.resultMap("addRole", addRole, "",  "", "", "");
     }
 
+    @Transactional(rollbackFor = {Exception.class})
+    public Map<String, Object> removeUser(User user){
+        int removeUser = userMapper.removeUserByUserId(user.getId());
+        int removeUserRole = userMapper.removeUserRoleByUserId(user.getId());
+        return this.resultMap("removeUser", removeUser, "removeUserRole", removeUserRole, "", "");
+    }
+
     public void insertUser(User user) {
         userMapper.insertUser(user);
     }

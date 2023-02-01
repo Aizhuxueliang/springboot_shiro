@@ -30,7 +30,7 @@
                             <template slot-scope="scope">
                                 <el-button
                                         type="text"
-                                        icon="el-icon-setting"
+                                        icon="el-icon-edit"
                                         @click="handleEditUser(scope.$index, scope.row)">分配角色
                                 </el-button>
                                 <el-button
@@ -111,7 +111,6 @@
         },
         methods: {
             queryUserListPage() {
-                <!--ELEMENT.Message('这是一条消息提示');-->
                 axios.defaults.headers.post['Content-Type'] = 'application/json';
                 axios({
                     method: 'post',
@@ -203,7 +202,40 @@
 
             },
             handleDeleteUser(index, row) {
-                this.ruleForm = Object.assign({}, row, index); //这句是关键！！！
+                //this.ruleForm = Object.assign({}, row, index); //这句是关键！！！
+                ELEMENT.MessageBox.confirm('此操作将永久删除用户'+row.id+', 是否继续?', '提示', {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                    type: 'warning'
+                }).then(() => {
+                    axios.defaults.headers.post['Content-Type'] = 'application/json';
+                    axios({
+                        method: 'post',
+                        url: '/user/removeUser',
+                        data: JSON.stringify({
+                            id: row.id
+                        })
+                    }).then(response => {
+                        if (response.data.removeUser >= 0 && response.data.removeUserRole >= 0) {
+                            if(((this.userRowCount - 1) % 5 == 0) && ((this.userRowCount - 1) / 5 == (this.currentPage - 1))) {
+                                this.currentPage = this.currentPage - 1;
+                            }
+                            this.queryUserListPage();
+                            ELEMENT.Notification({
+                                title: '删除成功',
+                                message: '用户'+row.username+'，删除成功！',
+                                type: 'success',
+                                position: 'top-right',
+                                showClose: false,
+                                offset: 100
+                            });
+                        }
+                    }).catch(error => {
+                        ELEMENT.Message({ type: 'info', message: error});
+                    });
+                }).catch(() => {
+                    ELEMENT.Message({ type: 'info', message: '已取消删除'});
+                });
             },
             handleClose() {
                 ELEMENT.Message({

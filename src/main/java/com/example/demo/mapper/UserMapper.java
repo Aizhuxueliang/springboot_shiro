@@ -61,6 +61,14 @@ public interface UserMapper {
      */
     int getUserRowCount(User user);
 
+    /**
+     * 根据用户id删除用户
+     *
+     * @param id userId
+     * @return int
+     */
+    int removeUserByUserId(int id);
+
 
     int insertUser(User user);
 

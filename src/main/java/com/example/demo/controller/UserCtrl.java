@@ -165,6 +165,22 @@ public class UserCtrl {
     }
 
     /**
+     * 删除用户
+     *
+     * @param user user
+     * @return resultMap
+     */
+    @RequestMapping(value = "/removeUser", method = RequestMethod.POST)
+    public Map<String, Object> removeUser(@RequestBody User user) {
+        try{
+            return userService.removeUser(user);
+        }catch (Exception e){
+            e.printStackTrace();
+            return userService.resultMap("error", e.getMessage(), "",  "", "", "");
+        }
+    }
+
+    /**
      * 新增用户
      *
      * @param user role
