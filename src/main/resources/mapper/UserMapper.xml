@@ -60,9 +60,9 @@
 			password,
 			reserve
 		)values(
-			#{userName, jdbcType = VARCHAR},
+			#{username, jdbcType = VARCHAR},
 			#{password, jdbcType = VARCHAR},
-			#{reserve, jdbcType = VARCHAR}
+			#{reserve, jdbcType = VARCHAR})
 	</insert>
 
 	<insert id="addUserRole" parameterType="com.example.demo.entity.User" useGeneratedKeys="true" keyProperty="id">

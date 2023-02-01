@@ -29,11 +29,13 @@
                             <el-button
                                     :plain="true"
                                     @click="queryUserListPage"
+                                    icon="el-icon-search"
                                     size="medium">查询用户</el-button>
                         </div>
                         <el-button
                                 :plain="true"
-                                @click="queryUserListPage"
+                                @click="handleAddUser"
+                                icon="el-icon-user"
                                 size="medium">新建用户</el-button>
                     </div>
                     <el-table
@@ -46,19 +48,19 @@
                         </el-table-column>
                         <el-table-column
                                 prop="username"
-                                label="用户姓名">
+                                label="用户名称">
                         </el-table-column>
                         <el-table-column
                                 label="操作">
                             <template slot-scope="scope">
                                 <el-button
                                         type="text"
-                                        icon="el-icon-edit"
+                                        icon="el-icon-set-up"
                                         @click="handleEditUser(scope.$index, scope.row)">分配角色
                                 </el-button>
                                 <el-button
                                         type="text"
-                                        icon="el-icon-delete"
+                                        icon="el-icon-remove-outline"
                                         @click="handleDeleteUser(scope.$index, scope.row)">删除用户
                                 </el-button>
                             </template>
@@ -75,7 +77,6 @@
                     </el-pagination>
                 </el-col>
             </el-row>
-
             <el-dialog title="分配角色" :visible.sync="dialogEditUser" :before-close="handleClose">
                 <el-transfer
                         v-model="transferValue"
@@ -87,16 +88,47 @@
 			        <el-button type="primary" @click="assignRoles">确 定</el-button>
 		        </span>
             </el-dialog>
-
+            <el-dialog title="新建用户" :visible.sync="dialogAddUser" :before-close="handleClose">
+                <div>
+                    <span>用户名称:</span>
+                    <el-input
+                            v-model="username"
+                            placeholder="请输入用户名称"
+                            size="medium"></el-input>
+                </div>
+                <div>
+                    <span>密码:</span>
+                    <el-input
+                            v-model="password"
+                            placeholder="请输入密码"
+                            size="medium"
+                            show-password></el-input>
+                </div>
+                <div>
+                    <span>再次输入密码:</span>
+                    <el-input
+                            v-model="password1"
+                            placeholder="请再次输入密码"
+                            size="medium"
+                            show-password></el-input>
+                </div>
+                <div>
+                    <span>备注:</span>
+                    <el-input
+                            v-model="reserve"
+                            placeholder="请输入用户备注"
+                            size="medium"></el-input>
+                </div>
+                <span slot="footer" class="dialog-footer">
+			        <el-button @click="handleClose">取 消</el-button>
+			        <el-button type="primary" @click="insertUser">确 定</el-button>
+		        </span>
+            </el-dialog>
         </el-tab-pane>
 
         <el-tab-pane label="角色设置">
 
-            <el-button
-                    plain
-                    @click="handleClose1">
-                关闭
-            </el-button>
+            <span>角色设置</span>
 
         </el-tab-pane>
 
@@ -124,13 +156,17 @@
             userRowCount: 0,
             currentPage: 0,
             hidePageFlag: true,
-            // 角色弹框
+            // 弹框
             dialogEditUser: false,// 分配角色弹框
+            dialogAddUser: false,// 新建用户弹框
             // 用户信息
             allRoleList: [],
+            roleList: [],
             id: null,
             username: '',
-            roleList: []
+            password: '',
+            password1: '',
+            reserve: ''
         },
         methods: {
             queryUserListPage() {
@@ -210,10 +246,10 @@
                             type: 'success',
                             position: 'top-right',
                             showClose: false,
-                            offset: 100
+                            offset: 110
                         });
                     }
-                    this.id = 0;
+                    this.id = null;
                     this.username = '';
                     this.allRoleList = [];
                     this.roleList = [];
@@ -251,7 +287,7 @@
                                 type: 'success',
                                 position: 'top-right',
                                 showClose: false,
-                                offset: 100
+                                offset: 110
                             });
                         }
                     }).catch(error => {
@@ -262,27 +298,60 @@
                 });
             },
             handleClose() {
-                ELEMENT.Message({
-                    message: '取消操作，系统不会保留任何更改',
-                    type:'warning'
-                });
                 this.dialogEditUser = false;
-                this.id = 0;
+                this.dialogAddUser = false;
+                this.id = null;
                 this.username = '';
+                this.password = '';
+                this.password1 = '';
+                this.reserve = '';
                 this.allRoleList = [];
                 this.roleList = [];
                 this.transferData = [];
                 this.transferValue = [];
+                this.queryUserListPage();
+                ELEMENT.Message({
+                    message: '取消操作，系统不会保留任何更改',
+                    type:'warning'
+                });
             },
-            handleClose1() {
-                ELEMENT.MessageBox.confirm('此操作将永久删除该文件, 是否继续?', '提示', {
-                    confirmButtonText: '确定',
-                    cancelButtonText: '取消',
-                    type: 'warning'
-                }).then(() => {
-                    ELEMENT.Message({ type: 'success', message: '删除成功!'});
-                }).catch(() => {
-                    ELEMENT.Message({ type: 'info', message: '已取消删除'});
+            handleAddUser(){
+                this.dialogAddUser = true;
+                this.id = null;
+                this.username = '';
+                this.password = '';
+                this.password1 = '';
+                this.reserve = '';
+            },
+            insertUser() {
+                axios.defaults.headers.post['Content-Type'] = 'application/json';
+                axios({
+                    method: 'post',
+                    url: '/user/insertUser',
+                    data: JSON.stringify({
+                        username: this.username,
+                        password: this.password,
+                        reserve: this.reserve
+                    })
+                }).then(response => {
+                    if(response.data.addUser > 0) {
+                        this.dialogAddUser = false;
+                        this.password = '';
+                        this.password1 = '';
+                        this.reserve = '';
+                        this.queryUserListPage();
+                        ELEMENT.Notification({
+                            title: '添加成功',
+                            message: '用户'+this.username+'，添加成功！',
+                            type: 'success',
+                            position: 'top-right',
+                            showClose: false,
+                            offset: 110
+                        });
+                    }
+                    console.log(response.data);
+                }).catch(error => {
+                    ELEMENT.Message({ type: 'info', message: error});
                 });
             }
         }
@@ -314,11 +383,17 @@
     }
     .demo-input span {
         white-space: nowrap;
-        display: flex;
-        flex-direction: row-reverse;
     }
     .demo-input .el-input {
         width: auto;
+        padding-right: 7px;
+    }
+    .el-dialog__body {
+        display: flex;
+        flex-direction: column;
+        flex-wrap: nowrap;
+        justify-content: space-around;
+        height: 270px;
     }
 </style>
 </html>

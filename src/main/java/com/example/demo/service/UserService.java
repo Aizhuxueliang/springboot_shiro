@@ -107,8 +107,9 @@ public class UserService {
         return this.resultMap("removeUser", removeUser, "removeUserRole", removeUserRole, "", "");
     }
 
-    public void insertUser(User user) {
-        userMapper.insertUser(user);
+    public Map<String, Object> insertUser(User user) {
+        int addUser = userMapper.insertUser(user);
+        return this.resultMap("addUser", addUser, "", "", "", "");
     }
 
     public Map<String, Object> resultMap(String str1, Object obj1, String str2, Object obj2, String str3, Object obj3){

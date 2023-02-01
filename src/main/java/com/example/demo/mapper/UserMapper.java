@@ -69,7 +69,12 @@ public interface UserMapper {
      */
     int removeUserByUserId(int id);
 
-
+    /**
+     * 添加用户
+     *
+     * @param user user
+     * @return int
+     */
     int insertUser(User user);
 
 

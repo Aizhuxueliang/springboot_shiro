@@ -183,11 +183,17 @@ public class UserCtrl {
     /**
      * 新增用户
      *
-     * @param user role
+     * @param user user
+     * @return resultMap
      */
     @RequestMapping(value = "/insertUser", method = RequestMethod.POST)
-    public void insertUser(User user) {
-        userService.insertUser(user);
+    public Map<String, Object> insertUser(@RequestBody User user) {
+        try{
+            return userService.insertUser(user);
+        }catch (Exception e){
+            e.printStackTrace();
+            return userService.resultMap("error", e.getMessage(), "",  "", "", "");
+        }
     }
 
 }
