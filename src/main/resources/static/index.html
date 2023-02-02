@@ -8,6 +8,62 @@
 <body>
 <div id="app">
     <el-tabs :tab-position="tabPosition">
+        <el-tab-pane label="其它设置">
+
+        </el-tab-pane>
+        <el-tab-pane label="角色设置">
+            <el-row type="flex" justify="center">
+                <el-col :span="18">
+                    <el-button
+                            :plain="true"
+                            @click="queryRoleList"
+                            icon="el-icon-search"
+                            size="medium">角色查询</el-button>
+                    <el-table
+                            :data="roleData"
+                            border
+                            highlight-current-row>
+                        <el-table-column
+                                prop="id"
+                                label="角色ID">
+                        </el-table-column>
+                        <el-table-column
+                                prop="name"
+                                label="角色名称">
+                        </el-table-column>
+                        <el-table-column
+                                prop="description"
+                                label="角色描述">
+                        </el-table-column>
+                        <el-table-column
+                                label="操作">
+                            <template slot-scope="scope">
+                                <el-button
+                                        type="text"
+                                        icon="el-icon-s-operation"
+                                        @click="handleEditRole(scope.$index, scope.row)">分配权限
+                                </el-button>
+                                <el-button
+                                        type="text"
+                                        icon="el-icon-remove-outline"
+                                        @click="handleDeleteRole(scope.$index, scope.row)">删除角色
+                                </el-button>
+                            </template>
+                        </el-table-column>
+                    </el-table>
+                </el-col>
+            </el-row>
+            <el-dialog title="分配权限" :visible.sync="dialogEditRole" :before-close="handleClose">
+                <el-checkbox-group v-model="checkedPermissions">
+                    <el-checkbox v-for="permission in permissions" :label="permission.name" :key="permission.name">{{permission.description}}</el-checkbox>
+                </el-checkbox-group>
+                <span slot="footer" class="dialog-footer">
+			        <el-button @click="handleClose">取 消</el-button>
+			        <el-button type="primary" @click="assignPermissions">确 定</el-button>
+		        </span>
+            </el-dialog>
+        </el-tab-pane>
+
         <el-tab-pane label="用户设置">
             <el-row type="flex" justify="center">
                 <el-col :span="18">
@@ -125,13 +181,6 @@
 		        </span>
             </el-dialog>
         </el-tab-pane>
-
-        <el-tab-pane label="角色设置">
-
-            <span>角色设置</span>
-
-        </el-tab-pane>
-
     </el-tabs>
 
 </div>
@@ -147,6 +196,14 @@
     new Vue({
         el: '#app',
         data: {
+            // 角色信息
+            roleData: [],
+            roleId: null,
+            name: '',
+            description: '',
+            dialogEditRole: false,
+            permissions: [],
+            checkedPermissions: [],
             // 穿梭框
             transferValue: [],
             transferData: [],
@@ -169,6 +226,51 @@
             reserve: ''
         },
         methods: {
+            queryRoleList() {
+                axios.defaults.headers.post['Content-Type'] = 'application/json';
+                axios({
+                    method: 'post',
+                    url: '/user/findRoleListByUserId',
+                    data: JSON.stringify({
+                        id: 0
+                    })
+                }).then(response => {
+                    this.roleData = response.data.allRoleList;
+                }).catch(error => {
+                    console.log(error);
+                    ELEMENT.Message(error);
+                });
+
+            },
+            handleEditRole(index, row){
+                axios.defaults.headers.post['Content-Type'] = 'application/json';
+                axios({
+                    method: 'post',
+                    url: '/user/findPermissionListByRoleId',
+                    data: JSON.stringify({
+                        id: row.id
+                    })
+                }).then(response => {
+                    console.log(response.data);
+                    this.permissions = response.data.allPermissionList;
+                    for(let item of response.data.bePermissionList){
+                        this.checkedPermissions.push(item.name);
+                    }
+                    this.roleId = row.id;
+                    this.name = row.name;
+                    this.dialogEditRole = true;
+                }).catch(error => {
+                    console.log(error);
+                    ELEMENT.Message(error);
+                });
+            },
+            handleDeleteRole(index, row){
+
+            },
+            assignPermissions(){
+                this.dialogEditRole = false;
+            },
+            // ------------------------用户设置部分--------------
             queryUserListPage() {
                 axios.defaults.headers.post['Content-Type'] = 'application/json';
                 axios({
@@ -190,6 +292,7 @@
                     console.log(response.data);
                 }).catch(error => {
                     console.log(error);
+                    ELEMENT.Message(error);
                 });
             },
             handleEditUser(index, row) {
@@ -298,6 +401,7 @@
                 });
             },
             handleClose() {
+                // 用户相关
                 this.dialogEditUser = false;
                 this.dialogAddUser = false;
                 this.id = null;
@@ -309,6 +413,12 @@
                 this.roleList = [];
                 this.transferData = [];
                 this.transferValue = [];
+                // 角色相关
+                this.dialogEditRole = false;
+                this.roleId = null;
+                this.name = null;
+                this.permissions = [];
+                this.checkedPermissions = [];
                 this.queryUserListPage();
                 ELEMENT.Message({
                     message: '取消操作，系统不会保留任何更改',
@@ -392,6 +502,12 @@
         display: flex;
         flex-direction: column;
         flex-wrap: nowrap;
+        justify-content: space-around;
+        height: 270px;
+    }
+    .el-checkbox-group {
+        display: flex;
+        flex-direction: column;
         justify-content: space-around;
         height: 270px;
     }
