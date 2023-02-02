@@ -204,6 +204,7 @@
             dialogEditRole: false,
             permissions: [],
             checkedPermissions: [],
+            permissionList: [],
             // 穿梭框
             transferValue: [],
             transferData: [],
@@ -268,7 +269,43 @@
 
             },
             assignPermissions(){
-                this.dialogEditRole = false;
+                for(let item of this.permissions){
+                    for(let i = 0, len = this.checkedPermissions.length; i < len; i++ ){
+                        if (this.checkedPermissions[i] == item.name) {
+                            this.permissionList.push(item);
+                        }
+                    }
+                }
+                axios.defaults.headers.post['Content-Type'] = 'application/json';
+                axios({
+                    method: 'post',
+                    url: '/user/updateRolePermission',
+                    data: JSON.stringify({
+                        id: this.roleId,
+                        permissionList: this.permissionList,
+                    })
+                }).then(response => {
+                    if (response.data.removeRolePermission >= 0 && response.data.addRolePermission >= 0) {
+                        this.dialogEditRole = false;
+                        ELEMENT.Notification({
+                            title: '更新成功',
+                            message: '为角色'+this.name+'，分配权限成功！',
+                            type: 'success',
+                            position: 'top-right',
+                            showClose: false,
+                            offset: 110
+                        });
+                    }
+                    this.roleId = null;
+                    this.name = null;
+                    this.permissions = [];
+                    this.checkedPermissions = [];
+                    this.permissionList = [];
+                    console.log(response.data);
+                }).catch(error => {
+                    console.log(error);
+                    ELEMENT.Message(error);
+                });
             },
             // ------------------------用户设置部分--------------
             queryUserListPage() {
@@ -401,7 +438,7 @@
                 });
             },
             handleClose() {
-                // 用户相关
+                // 用户设置
                 this.dialogEditUser = false;
                 this.dialogAddUser = false;
                 this.id = null;
@@ -413,13 +450,13 @@
                 this.roleList = [];
                 this.transferData = [];
                 this.transferValue = [];
-                // 角色相关
+                // 角色设置
                 this.dialogEditRole = false;
                 this.roleId = null;
                 this.name = null;
                 this.permissions = [];
                 this.checkedPermissions = [];
-                this.queryUserListPage();
+                this.permissionList = [];
                 ELEMENT.Message({
                     message: '取消操作，系统不会保留任何更改',
                     type:'warning'
@@ -506,10 +543,14 @@
         height: 270px;
     }
     .el-checkbox-group {
+        height: 100%;
         display: flex;
         flex-direction: column;
-        justify-content: space-around;
-        height: 270px;
+        margin: auto;
+    }
+    .el-checkbox {
+        height: 30px;
+        line-height: 30px;
     }
 </style>
 </html>
