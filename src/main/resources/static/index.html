@@ -8,17 +8,51 @@
 <body>
 <div id="app">
     <el-tabs :tab-position="tabPosition">
-        <el-tab-pane label="其它设置">
-
+        <el-tab-pane label="权限列表">
+            <el-row type="flex" justify="center">
+                <el-col :span="18">
+                    <div class="handle-area">
+                        <el-button
+                                :plain="true"
+                                @click="queryPermissionList"
+                                icon="el-icon-search"
+                                size="medium">权限查询</el-button>
+                    </div>
+                    <el-table
+                            :data="permissionData"
+                            border
+                            highlight-current-row>
+                        <el-table-column
+                                prop="id"
+                                label="权限ID">
+                        </el-table-column>
+                        <el-table-column
+                                prop="name"
+                                label="权限名称">
+                        </el-table-column>
+                        <el-table-column
+                                prop="description"
+                                label="权限描述">
+                        </el-table-column>
+                    </el-table>
+                </el-col>
+            </el-row>
         </el-tab-pane>
         <el-tab-pane label="角色设置">
             <el-row type="flex" justify="center">
                 <el-col :span="18">
-                    <el-button
-                            :plain="true"
-                            @click="queryRoleList"
-                            icon="el-icon-search"
-                            size="medium">角色查询</el-button>
+                    <div class="handle-area">
+                        <el-button
+                                :plain="true"
+                                @click="queryRoleList"
+                                icon="el-icon-search"
+                                size="medium">角色查询</el-button>
+                        <el-button
+                                :plain="true"
+                                @click="queryRoleList"
+                                icon="el-icon-circle-plus-outline"
+                                size="medium">新建角色</el-button>
+                    </div>
                     <el-table
                             :data="roleData"
                             border
@@ -205,6 +239,8 @@
             permissions: [],
             checkedPermissions: [],
             permissionList: [],
+            // 权限信息
+            permissionData: [],
             // 穿梭框
             transferValue: [],
             transferData: [],
@@ -227,6 +263,22 @@
             reserve: ''
         },
         methods: {
+            queryPermissionList() {
+                axios.defaults.headers.post['Content-Type'] = 'application/json';
+                axios({
+                    method: 'post',
+                    url: '/user/findPermissionListByRoleId',
+                    data: JSON.stringify({
+                        id: 0
+                    })
+                }).then(response => {
+                    this.permissionData = response.data.allPermissionList;
+                }).catch(error => {
+                    console.log(error);
+                    ELEMENT.Message(error);
+                });
+
+            },
             queryRoleList() {
                 axios.defaults.headers.post['Content-Type'] = 'application/json';
                 axios({
@@ -326,7 +378,8 @@
                     } else {
                         this.hidePageFlag = true;
                     }
-                    console.log(response.data);
+                    this.currentPage = 1;
+                        console.log(response.data);
                 }).catch(error => {
                     console.log(error);
                     ELEMENT.Message(error);
