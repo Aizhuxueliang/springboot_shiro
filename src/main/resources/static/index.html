@@ -7,6 +7,7 @@
 </head>
 <body>
 <div id="app">
+<template id="manager">
     <el-tabs :tab-position="tabPosition">
         <el-tab-pane label="用户设置">
             <el-row type="flex" justify="center">
@@ -239,6 +240,7 @@
             </el-row>
         </el-tab-pane>
     </el-tabs>
+</template>
 </div>
 </body>
 <!-- import Vue before Element -->
@@ -247,8 +249,16 @@
 <script src="https://unpkg.com/element-ui/lib/index.js"></script>
 <!-- import Axios -->
 <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+<!-- import Router -->
+<script src="https://cdn.staticfile.org/vue-router/2.7.0/vue-router.min.js"></script>
 <script>
+    const routerManager = new VueRouter({
+        routes:[
+
+        ]
+    });
     new Vue({
+        router: routerManager,
         el: '#app',
         data: {
             // 角色信息

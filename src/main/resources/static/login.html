@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
     <meta charset="UTF-8">
     <title>登录页面</title>
@@ -8,24 +8,28 @@
 </head>
 <body>
 <div id="app">
-    <div class="handle">
-        <div class="high70">
-            <span>用户名称:</span>
-            <el-input
-                    v-model="username"
-                    placeholder="请输入用户名称"
-                    clearable></el-input>
+    <template id="login">
+        <div class="handle">
+            <div class="handle-input">
+                <div class="high70">
+                    <span>用户名称:</span>
+                    <el-input
+                            v-model="username"
+                            placeholder="请输入用户名称"
+                            clearable></el-input>
+                </div>
+                <div class="high70">
+                    <span>密码:</span>
+                    <el-input
+                            v-model="password"
+                            placeholder="请输入密码"
+                            clearable
+                            show-password></el-input>
+                </div>
+                <el-button @click="$router.push('/manager')" plain>登录</el-button>
+            </div>
         </div>
-        <div class="high70">
-            <span>密码:</span>
-            <el-input
-                    v-model="password"
-                    placeholder="请输入密码"
-                    clearable
-                    show-password></el-input>
-        </div>
-        <el-button plain>登录</el-button>
-    </div>
+    </template>
 </div>
 </body>
 <!-- import Vue before Element -->
@@ -34,8 +38,16 @@
 <script src="https://unpkg.com/element-ui/lib/index.js"></script>
 <!-- import Axios -->
 <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+<!-- import Router -->
+<script src="https://cdn.staticfile.org/vue-router/2.7.0/vue-router.min.js"></script>
 <script>
+    const routerLogin = new VueRouter({
+        routes:[
+
+        ]
+    });
     new Vue({
+        router: routerLogin,
         el: '#app',
         data: {
             username: '',
@@ -47,32 +59,26 @@
     })
 </script>
 <style>
-    body {
-        background-image: url("banner.jpg");
-        background-position: center center;
-        background-repeat: no-repeat;
-        /* 当内容高度大于图片高度时，背景图像的位置相对于viewport固定 */
-        background-attachment: fixed;
-        background-size: cover;
-        background-color: #464646;
-    }
     .high70 {
         height: 70px;
     }
-    html,body{
+    .handle {
+        position: absolute;
         width: 100%;
         height: 100%;
-        box-sizing: border-box;
+        top: 0;
+        left: 0;
         margin: 0;
-    }
-    #app {
+        background-image: url(banner.jpg);
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size: cover;
+        overflow: hidden;
         display: flex;
         justify-content: center;
         align-items: center;
-        width: 100%;
-        height:100%;
     }
-    .handle {
+    .handle-input {
         display: flex;
         flex-direction: column;
     }
