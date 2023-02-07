@@ -21,16 +21,6 @@ public class UserCtrl {
     private UserService userService;
 
     /**
-     * 需要登录
-     *
-     * @return resultMap
-     */
-    @GetMapping("/needLogin")
-    public Map<String, Object> needLogin() {
-        return userService.resultMap("error", "温馨提示：请使用对应的账号登录", "",  "", "", "");
-    }
-
-    /**
      * 登录接口
      *
      * @param user user

@@ -27,7 +27,7 @@
                         clearable
                         show-password></el-input>
             </div>
-            <el-button @click="$router.push('/manager')" plain>登录</el-button>
+            <el-button @click="login" plain>登录</el-button>
         </div>
     </div>
 </template>
@@ -36,7 +36,7 @@
         <el-tab-pane label="用户设置">
             <el-row type="flex" justify="center">
                 <el-col :span="18">
-                    <div class="handle-area">
+                    <div class="handle-area" v-show="permissionsFlag.query_user">
                         <div class="demo-input">
                             <span>用户ID:</span>
                             <el-input
@@ -274,28 +274,42 @@
 <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 <!-- import Router -->
 <script src="https://cdn.staticfile.org/vue-router/2.7.0/vue-router.min.js"></script>
-<!-- import Jquery -->
-<script src="https://cdn.jsdelivr.net/npm/jquery/dist/jquery.min.js"></script>
 <script>
     const Sign = {
-        // todo-item 组件现在接受一个
-        // "prop"，类似于一个自定义 attribute。
-        // 这个 prop 名为 todo。
         props: ['todo'],
         template: '#sign',
         data() {
             return {
                 username: '',
-                password: ''
+                password: '',
+                permissionsStr: [],
+                token: ''
             }
         },
         methods: {
-            demo: function (val) {
-                console.log('调用的子模块的方法', val);
-            },
-            sendMessage: function () {
-                console.log(this.$emit);
-                this.$emit('sendaa', '组件ComponentA发送消息了');
+            login() {
+                axios.defaults.headers.post['Content-Type'] = 'application/json';
+                axios({
+                    method: 'post',
+                    url: '/user/login',
+                    data: JSON.stringify({
+                        username: this.username,
+                        password: this.password
+                    })
+                }).then(response => {
+                    this.permissionsStr = response.data.permissions;
+                    this.token = response.data.token;
+                    this.$router.push({
+                        name: 'manager',
+                        params: {
+                            token: this.token,
+                            permissionsStr: this.permissionsStr
+                        }
+                    });
+                }).catch(error => {
+                    console.log(error);
+                    ELEMENT.Message(error);
+                });
             }
         },
         mounted() {
@@ -343,7 +357,20 @@
                 password: '',
                 password1: '',
                 reserve: '',
-                roleTitle: ''
+                roleTitle: '',
+                permissionsStr: [],
+                permissionsFlag: {
+                    query_user: false,
+                    add_user: false,
+                    remove_user: false,
+                    allot_roles: false,
+                    query_role: false,
+                    add_role: false,
+                    remove_role: false,
+                    allot_permission: false
+                },
+                token: ''
+
             }
         },
         methods: {
@@ -361,7 +388,6 @@
                     console.log(error);
                     ELEMENT.Message(error);
                 });
-
             },
             queryRoleList() {
                 axios.defaults.headers.post['Content-Type'] = 'application/json';
@@ -510,6 +536,7 @@
             },
             // ------------------------用户设置部分--------------
             queryUserList() {
+                console.log(this.token);
                 axios.defaults.headers.post['Content-Type'] = 'application/json';
                 axios({
                     method: 'post',
@@ -733,22 +760,39 @@
         },
         mounted() {
             console.log('组件Manager被挂载了');
+        },
+        created() {
+            this.permissionsStr = this.$route.params.permissionsStr;
+            this.token = this.$route.params.token;
+            for(let key in this.permissionsFlag){
+                for(let i in this.permissionsStr){
+                    if(this.permissionsStr[i] == key){
+                        this.permissionsFlag[key] = true;
+                    }
+                }
+                console.log(key + '---' + this.permissionsFlag[key])
+            }
         }
     };
     const router = new VueRouter({
         routes:[
-            { path: '/', component: Sign },
-            { path: '/manager', component: Manager }
+            {
+                path: '/',
+                name: 'sign',
+                component: Sign
+            },
+            {
+                path: '/manager',
+                name: 'manager',
+                component: Manager
+            }
         ]
     });
     new Vue({
         router,
         el: '#app',
-        data: {
-
-        },
+        data: {},
         methods: {}
-
     })
 </script>
 <style>
@@ -776,10 +820,6 @@
     }
     .demo-input span {
         white-space: nowrap;
-    }
-    .demo-input .el-input {
-        width: auto;
-        padding-right: 7px;
     }
     .el-dialog__body {
         display: flex;

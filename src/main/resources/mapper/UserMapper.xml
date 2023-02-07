@@ -7,12 +7,14 @@
     <resultMap id="resultUser" type="com.example.demo.entity.User">
         <result property="id" column="id" />
 		<result property="username" column="username" />
+		<result property="password" column="password" />
     </resultMap>
 
     <select id="findUserByName" resultMap="resultUser" parameterType="String">
 		select
 			id,
-			username
+			username,
+		    password
 		from user where
 		    username = #{userName}
 	</select>
