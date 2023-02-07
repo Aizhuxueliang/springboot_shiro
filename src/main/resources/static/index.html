@@ -7,6 +7,30 @@
 </head>
 <body>
 <div id="app">
+    <router-view></router-view>
+</div>
+<template id="sign">
+    <div class="handle">
+        <div class="handle-input">
+            <div class="high70">
+                <span>用户名称:</span>
+                <el-input
+                        v-model="username"
+                        placeholder="请输入用户名称"
+                        clearable></el-input>
+            </div>
+            <div class="high70">
+                <span>密码:</span>
+                <el-input
+                        v-model="password"
+                        placeholder="请输入密码"
+                        clearable
+                        show-password></el-input>
+            </div>
+            <el-button @click="$router.push('/manager')" plain>登录</el-button>
+        </div>
+    </div>
+</template>
 <template id="manager">
     <el-tabs :tab-position="tabPosition">
         <el-tab-pane label="用户设置">
@@ -241,7 +265,6 @@
         </el-tab-pane>
     </el-tabs>
 </template>
-</div>
 </body>
 <!-- import Vue before Element -->
 <script src="https://unpkg.com/vue@2/dist/vue.js"></script>
@@ -251,50 +274,77 @@
 <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 <!-- import Router -->
 <script src="https://cdn.staticfile.org/vue-router/2.7.0/vue-router.min.js"></script>
+<!-- import Jquery -->
+<script src="https://cdn.jsdelivr.net/npm/jquery/dist/jquery.min.js"></script>
 <script>
-    const routerManager = new VueRouter({
-        routes:[
-
-        ]
-    });
-    new Vue({
-        router: routerManager,
-        el: '#app',
-        data: {
-            // 角色信息
-            roleData: [],
-            roleId: null,
-            name: '',
-            description: '',
-            dialogEditRole: false,
-            dialogAddRole: false,
-            permissions: [],
-            checkedPermissions: [],
-            permissionList: [],
-            permissionsTitle: '',
-            // 权限信息
-            permissionData: [],
-            // 穿梭框
-            transferValue: [],
-            transferData: [],
-            // 表格及分页
-            tableData: [],
-            tabPosition: 'top',
-            userRowCount: 0,
-            currentPage: 0,
-            hidePageFlag: true,
-            // 弹框
-            dialogEditUser: false,// 分配角色弹框
-            dialogAddUser: false,// 新建用户弹框
-            // 用户信息
-            allRoleList: [],
-            roleList: [],
-            id: null,
-            username: '',
-            password: '',
-            password1: '',
-            reserve: '',
-            roleTitle: ''
+    const Sign = {
+        // todo-item 组件现在接受一个
+        // "prop"，类似于一个自定义 attribute。
+        // 这个 prop 名为 todo。
+        props: ['todo'],
+        template: '#sign',
+        data() {
+            return {
+                username: '',
+                password: ''
+            }
+        },
+        methods: {
+            demo: function (val) {
+                console.log('调用的子模块的方法', val);
+            },
+            sendMessage: function () {
+                console.log(this.$emit);
+                this.$emit('sendaa', '组件ComponentA发送消息了');
+            }
+        },
+        mounted() {
+            console.log('组件Sign被挂载了');
+        }
+    };
+    const Manager = {
+        // todo-item 组件现在接受一个
+        // "prop"，类似于一个自定义 attribute。
+        // 这个 prop 名为 todo。
+        props: ['todo'],
+        template: '#manager',
+        data() {
+            return {
+                // 角色信息
+                roleData: [],
+                roleId: null,
+                name: '',
+                description: '',
+                dialogEditRole: false,
+                dialogAddRole: false,
+                permissions: [],
+                checkedPermissions: [],
+                permissionList: [],
+                permissionsTitle: '',
+                // 权限信息
+                permissionData: [],
+                // 穿梭框
+                transferValue: [],
+                transferData: [],
+                // 表格及分页
+                tableData: [],
+                tabPosition: 'top',
+                userRowCount: 0,
+                currentPage: 0,
+                hidePageFlag: true,
+                // 弹框
+                dialogEditUser: false,// 分配角色弹框
+                dialogAddUser: false,// 新建用户弹框
+                // 用户信息
+                allRoleList: [],
+                roleList: [],
+                id: null,
+                username: '',
+                password: '',
+                password1: '',
+                reserve: '',
+                roleTitle: ''
+            }
         },
         methods: {
             queryPermissionList() {
@@ -680,7 +730,24 @@
                     ELEMENT.Message({ type: 'info', message: error});
                 });
             }
+        },
+        mounted() {
+            console.log('组件Manager被挂载了');
         }
+    };
+    const router = new VueRouter({
+        routes:[
+            { path: '/', component: Sign },
+            { path: '/manager', component: Manager }
+        ]
+    });
+    new Vue({
+        router,
+        el: '#app',
+        data: {
+
+        },
+        methods: {}
 
     })
 </script>
@@ -734,6 +801,26 @@
     }
     .high70 {
         height: 70px;
+    }
+    .handle {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        top: 0;
+        left: 0;
+        margin: 0;
+        background-image: url(banner.jpg);
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size: cover;
+        overflow: hidden;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+    .handle-input {
+        display: flex;
+        flex-direction: column;
     }
 </style>
 </html>
