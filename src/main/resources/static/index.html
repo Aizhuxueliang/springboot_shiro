@@ -296,7 +296,7 @@
         },
         methods: {
             login() {
-                axios.defaults.headers.post['Content-Type'] = 'application/json';
+                axios.defaults.headers.post['Content-Type'] = 'application/json;charset=UTF-8';
                 axios({
                     method: 'post',
                     url: '/user/login',
@@ -394,7 +394,8 @@
         },
         methods: {
             queryPermissionList() {
-                axios.defaults.headers.post['Content-Type'] = 'application/json';
+                axios.defaults.headers.token = this.token;
+                axios.defaults.headers.post['Content-Type'] = 'application/json;charset=UTF-8';
                 axios({
                     method: 'post',
                     url: '/user/findPermissionListByRoleId',
@@ -418,7 +419,8 @@
                 });
             },
             queryRoleList() {
-                axios.defaults.headers.post['Content-Type'] = 'application/json';
+                axios.defaults.headers.token = this.token;
+                axios.defaults.headers.post['Content-Type'] = 'application/json;charset=UTF-8';
                 axios({
                     method: 'post',
                     url: '/user/findRoleListByUserId',
@@ -443,7 +445,8 @@
 
             },
             handleEditRole(index, row){
-                axios.defaults.headers.post['Content-Type'] = 'application/json';
+                axios.defaults.headers.token = this.token;
+                axios.defaults.headers.post['Content-Type'] = 'application/json;charset=UTF-8';
                 axios({
                     method: 'post',
                     url: '/user/findPermissionListByRoleId',
@@ -480,7 +483,8 @@
                     cancelButtonText: '取消',
                     type: 'warning'
                 }).then(() => {
-                    axios.defaults.headers.post['Content-Type'] = 'application/json';
+                    axios.defaults.headers.token = this.token;
+                    axios.defaults.headers.post['Content-Type'] = 'application/json;charset=UTF-8';
                     axios({
                         method: 'post',
                         url: '/user/removeRole',
@@ -521,7 +525,8 @@
                 this.destination = '';
             },
             insertRole(){
-                axios.defaults.headers.post['Content-Type'] = 'application/json';
+                axios.defaults.headers.token = this.token;
+                axios.defaults.headers.post['Content-Type'] = 'application/json;charset=UTF-8';
                 axios({
                     method: 'post',
                     url: '/user/addRole',
@@ -566,7 +571,8 @@
                         }
                     }
                 }
-                axios.defaults.headers.post['Content-Type'] = 'application/json';
+                axios.defaults.headers.token = this.token;
+                axios.defaults.headers.post['Content-Type'] = 'application/json;charset=UTF-8';
                 axios({
                     method: 'post',
                     url: '/user/updateRolePermission',
@@ -610,8 +616,8 @@
             },
             // ------------------------用户设置部分--------------
             queryUserList() {
-                console.log(this.token);
-                axios.defaults.headers.post['Content-Type'] = 'application/json';
+                axios.defaults.headers.token = this.token;
+                axios.defaults.headers.post['Content-Type'] = 'application/json;charset=UTF-8';
                 axios({
                     method: 'post',
                     url: '/user/queryUserListPage',
@@ -644,7 +650,8 @@
                 });
             },
             queryUserListPage() {
-                axios.defaults.headers.post['Content-Type'] = 'application/json';
+                axios.defaults.headers.token = this.token;
+                axios.defaults.headers.post['Content-Type'] = 'application/json;charset=UTF-8';
                 axios({
                     method: 'post',
                     url: '/user/queryUserListPage',
@@ -677,7 +684,8 @@
                 });
             },
             handleEditUser(index, row) {
-                axios.defaults.headers.post['Content-Type'] = 'application/json';
+                axios.defaults.headers.token = this.token;
+                axios.defaults.headers.post['Content-Type'] = 'application/json;charset=UTF-8';
                 axios({
                     method: 'post',
                     url: '/user/findRoleListByUserId',
@@ -723,7 +731,8 @@
                         }
                     }
                 }
-                axios.defaults.headers.post['Content-Type'] = 'application/json';
+                axios.defaults.headers.token = this.token;
+                axios.defaults.headers.post['Content-Type'] = 'application/json;charset=UTF-8';
                 axios({
                     method: 'post',
                     url: '/user/updateUserRole',
@@ -773,7 +782,8 @@
                     cancelButtonText: '取消',
                     type: 'warning'
                 }).then(() => {
-                    axios.defaults.headers.post['Content-Type'] = 'application/json';
+                    axios.defaults.headers.token = this.token;
+                    axios.defaults.headers.post['Content-Type'] = 'application/json;charset=UTF-8';
                     axios({
                         method: 'post',
                         url: '/user/removeUser',
@@ -848,7 +858,8 @@
                 this.reserve = '';
             },
             insertUser() {
-                axios.defaults.headers.post['Content-Type'] = 'application/json';
+                axios.defaults.headers.token = this.token;
+                axios.defaults.headers.post['Content-Type'] = 'application/json;charset=UTF-8';
                 axios({
                     method: 'post',
                     url: '/user/insertUser',

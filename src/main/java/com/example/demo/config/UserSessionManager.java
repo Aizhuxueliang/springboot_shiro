@@ -21,7 +21,7 @@ public class UserSessionManager extends DefaultWebSessionManager {
     protected Serializable getSessionId(ServletRequest request, ServletResponse response) {
         //获取sessionId
         String sessionId= WebUtils.toHttp(request).getHeader(AUTHORIZATION);
-        if (sessionId!=null){
+        if (sessionId!=null && sessionId!=""){
             request.setAttribute(ShiroHttpServletRequest.REFERENCED_SESSION_ID_SOURCE,
                     ShiroHttpServletRequest.COOKIE_SESSION_ID_SOURCE);
             request.setAttribute(ShiroHttpServletRequest.REFERENCED_SESSION_ID, sessionId);

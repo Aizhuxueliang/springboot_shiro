@@ -21,29 +21,36 @@ public class ShiroConfig {
         //设置SecurityManager
         shiroFilterFactoryBean.setSecurityManager(securityManager);
         //如果访问需要登录的某个接口，却没有登录，则调用此接口(如果不是前后端分离，则跳转页面)
-        //shiroFilterFactoryBean.setLoginUrl("/UserManager.html");
+        //shiroFilterFactoryBean.setLoginUrl("/index.html");
         //登录成功后，跳转的链接，若前后端分离，没必要设置这个
         //shiroFilterFactoryBean.setSuccessUrl("");
         //登录成功，未授权会调用此方法
-        //shiroFilterFactoryBean.setUnauthorizedUrl("/user/not_permit");
+        //shiroFilterFactoryBean.setUnauthorizedUrl("/user/*");
         //拦截路径，必须使用:LinkedHashMap，要不然拦截效果会时有时无，因为使用的是无序的Map
         Map<String, String> filterChainDefinitionMap = new LinkedHashMap<>();
         //key=正则表达式路径，value=org.apache.shiro.web.filter.mgt.DefaultFilter
         //退出过滤器
         //filterChainDefinitionMap.put("/logout", "logout");
         //匿名可以访问，游客模式
-        //filterChainDefinitionMap.put("*", "anon");
-        //filterChainDefinitionMap.put("/user/**", "anon");
+        filterChainDefinitionMap.put("/user/login", "anon");
         //登录用户才可以访问
-        //filterChainDefinitionMap.put("/authc/**", "authc");
+        filterChainDefinitionMap.put("/user/**", "authc");
         //管理员角色才能访问
-        //filterChainDefinitionMap.put("/admin/**", "roles[admin]");
-        //有编辑权限才能访问
-        //filterChainDefinitionMap.put("/user/update", "perms[video_update]");
+        //filterChainDefinitionMap.put("/user/**", "roles[admin]");
+        //有权限才能访问
+        filterChainDefinitionMap.put("/user/queryUserListPage", "perms[query_user, add_user, allot_roles, remove_user]");
+        filterChainDefinitionMap.put("/user/insertUser", "perms[add_user]");
+        filterChainDefinitionMap.put("/user/removeUser", "perms[remove_user]");
+        filterChainDefinitionMap.put("/user/findRoleListByUserId", "perms[allot_roles, query_role, add_role, remove_role, allot_permission]");
+        filterChainDefinitionMap.put("/user/updateUserRole", "perms[allot_roles]");
+        filterChainDefinitionMap.put("/user/addRole", "perms[add_role]");
+        filterChainDefinitionMap.put("/user/removeRole", "perms[remove_role]");
+        filterChainDefinitionMap.put("/user/findPermissionListByRoleId", "perms[allot_permission]");
+        filterChainDefinitionMap.put("/user/updateRolePermission", "perms[allot_permission]");
         //authc：url必须通过认证才可以访问
         //anon：url可以匿名访问
         //过滤链是顺序执行，从上而下，一般把/**，放到最下面
-        //filterChainDefinitionMap.put("/**", "authc");
+        filterChainDefinitionMap.put("/**", "anon");
         shiroFilterFactoryBean.setFilterChainDefinitionMap(filterChainDefinitionMap);
         return shiroFilterFactoryBean;
     }
