@@ -315,6 +315,7 @@
                             showClose: false,
                             offset: 110
                         });
+                        return;
                     }
                     this.permissionsStr = response.data.permissions;
                     this.token = response.data.token;
@@ -411,6 +412,7 @@
                             showClose: false,
                             offset: 110
                         });
+                        return;
                     }
                     this.permissionData = response.data.allPermissionList;
                 }).catch(error => {
@@ -436,6 +438,7 @@
                             showClose: false,
                             offset: 110
                         });
+                        return;
                     }
                     this.roleData = response.data.allRoleList;
                 }).catch(error => {
@@ -463,6 +466,7 @@
                             showClose: false,
                             offset: 110
                         });
+                        return;
                     }
                     this.permissions = response.data.allPermissionList;
                     for(let item of response.data.bePermissionList){
@@ -500,6 +504,7 @@
                                 showClose: false,
                                 offset: 110
                             });
+                            return;
                         }
                         if (response.data.removeRolePermission >= 0 && response.data.removeRole >= 0 && response.data.removeUserRole >= 0) {
                             this.queryRoleList();
@@ -522,7 +527,7 @@
             handleAddRole(){
                 this.dialogAddRole = true;
                 this.name = '';
-                this.destination = '';
+                this.description = '';
             },
             insertRole(){
                 axios.defaults.headers.token = this.token;
@@ -543,6 +548,10 @@
                             showClose: false,
                             offset: 110
                         });
+                        this.dialogAddRole = false;
+                        this.name = '';
+                        this.description = '';
+                        return;
                     }
                     if(response.data.addRole > 0) {
                         this.queryRoleList();
@@ -556,7 +565,7 @@
                         });
                         this.dialogAddRole = false;
                         this.name = '';
-                        this.destination = '';
+                        this.description = '';
                     }
                     console.log(response.data);
                 }).catch(error => {
@@ -590,6 +599,13 @@
                             showClose: false,
                             offset: 110
                         });
+                        this.roleId = null;
+                        this.name = null;
+                        this.permissions = [];
+                        this.checkedPermissions = [];
+                        this.permissionList = [];
+                        this.permissionsTitle = '';
+                        return;
                     }
                     if (response.data.removeRolePermission >= 0 && response.data.addRolePermission >= 0) {
                         this.dialogEditRole = false;
@@ -601,13 +617,13 @@
                             showClose: false,
                             offset: 110
                         });
+                        this.roleId = null;
+                        this.name = null;
+                        this.permissions = [];
+                        this.checkedPermissions = [];
+                        this.permissionList = [];
+                        this.permissionsTitle = '';
                     }
-                    this.roleId = null;
-                    this.name = null;
-                    this.permissions = [];
-                    this.checkedPermissions = [];
-                    this.permissionList = [];
-                    this.permissionsTitle = '';
                     console.log(response.data);
                 }).catch(error => {
                     console.log(error);
@@ -634,6 +650,7 @@
                             showClose: false,
                             offset: 110
                         });
+                        return;
                     }
                     console.log(response.data);
                     this.tableData = response.data.userListPage;
@@ -669,6 +686,7 @@
                             showClose: false,
                             offset: 110
                         });
+                        return;
                     }
                     console.log(response.data);
                     this.tableData = response.data.userListPage;
@@ -702,6 +720,7 @@
                             showClose: false,
                             offset: 110
                         });
+                        return;
                     }
                     console.log(response.data);
                     for(let item of response.data.allRoleList){
@@ -751,6 +770,13 @@
                             showClose: false,
                             offset: 110
                         });
+                        this.id = null;
+                        this.username = '';
+                        this.allRoleList = [];
+                        this.roleList = [];
+                        this.transferData = [];
+                        this.transferValue = [];
+                        return;
                     }
                     if (response.data.removeUserRole >= 0 && response.data.addUserRole >= 0) {
                         this.dialogEditUser = false;
@@ -762,13 +788,13 @@
                             showClose: false,
                             offset: 110
                         });
+                        this.id = null;
+                        this.username = '';
+                        this.allRoleList = [];
+                        this.roleList = [];
+                        this.transferData = [];
+                        this.transferValue = [];
                     }
-                    this.id = null;
-                    this.username = '';
-                    this.allRoleList = [];
-                    this.roleList = [];
-                    this.transferData = [];
-                    this.transferValue = [];
                     console.log(response.data);
                 }).catch(error => {
                     console.log(error);
@@ -799,6 +825,7 @@
                                 showClose: false,
                                 offset: 110
                             });
+                            return;
                         }
                         if (response.data.removeUser >= 0 && response.data.removeUserRole >= 0) {
                             if(((this.userRowCount - 1) % 5 == 0) && ((this.userRowCount - 1) / 5 == (this.currentPage - 1))) {
@@ -897,6 +924,7 @@
                             showClose: false,
                             offset: 110
                         });
+                        return;
                     }
                     console.log(response.data);
                 }).catch(error => {

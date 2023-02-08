@@ -32,6 +32,7 @@ public class ShiroConfig {
         //退出过滤器
         //filterChainDefinitionMap.put("/logout", "logout");
         //匿名可以访问，游客模式
+        filterChainDefinitionMap.put("/", "anon");
         filterChainDefinitionMap.put("/user/login", "anon");
         //登录用户才可以访问
         filterChainDefinitionMap.put("/user/**", "authc");
@@ -50,7 +51,7 @@ public class ShiroConfig {
         //authc：url必须通过认证才可以访问
         //anon：url可以匿名访问
         //过滤链是顺序执行，从上而下，一般把/**，放到最下面
-        filterChainDefinitionMap.put("/**", "anon");
+        filterChainDefinitionMap.put("/**", "authc");
         shiroFilterFactoryBean.setFilterChainDefinitionMap(filterChainDefinitionMap);
         return shiroFilterFactoryBean;
     }
