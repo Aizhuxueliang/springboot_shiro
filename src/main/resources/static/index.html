@@ -33,11 +33,11 @@
 </template>
 <template id="manager">
     <el-tabs :tab-position="tabPosition">
-        <el-tab-pane label="用户设置">
+        <el-tab-pane label="用户设置" v-if="permissionsFlag.query_user || permissionsFlag.add_user || permissionsFlag.allot_roles || permissionsFlag.remove_user">
             <el-row type="flex" justify="center">
                 <el-col :span="18">
-                    <div class="handle-area" v-show="permissionsFlag.query_user">
-                        <div class="demo-input">
+                    <div class="handle-area">
+                        <div class="demo-input" v-show="permissionsFlag.query_user || permissionsFlag.add_user || permissionsFlag.allot_roles || permissionsFlag.remove_user">
                             <span>用户ID:</span>
                             <el-input
                                     v-model="id"
@@ -58,6 +58,7 @@
                                     size="medium">查询用户</el-button>
                         </div>
                         <el-button
+                                v-show="permissionsFlag.add_user"
                                 :plain="true"
                                 @click="handleAddUser"
                                 icon="el-icon-user"
@@ -79,11 +80,13 @@
                                 label="操作">
                             <template slot-scope="scope">
                                 <el-button
+                                        v-show="permissionsFlag.allot_roles"
                                         type="text"
                                         icon="el-icon-set-up"
                                         @click="handleEditUser(scope.$index, scope.row)">分配角色
                                 </el-button>
                                 <el-button
+                                        v-show="permissionsFlag.remove_user"
                                         type="text"
                                         icon="el-icon-remove-outline"
                                         @click="handleDeleteUser(scope.$index, scope.row)">删除用户
@@ -153,16 +156,18 @@
             </el-dialog>
         </el-tab-pane>
 
-        <el-tab-pane label="角色设置">
+        <el-tab-pane label="角色设置" v-if="permissionsFlag.allot_roles || permissionsFlag.query_role || permissionsFlag.add_role || permissionsFlag.remove_role || permissionsFlag.allot_permission">
             <el-row type="flex" justify="center">
                 <el-col :span="18">
                     <div class="handle-area">
                         <el-button
+                                v-show="permissionsFlag.allot_roles || permissionsFlag.query_role || permissionsFlag.add_role || permissionsFlag.remove_role || permissionsFlag.allot_permission"
                                 :plain="true"
                                 @click="queryRoleList"
                                 icon="el-icon-search"
                                 size="medium">角色查询</el-button>
                         <el-button
+                                v-show="permissionsFlag.add_role"
                                 :plain="true"
                                 @click="handleAddRole"
                                 icon="el-icon-circle-plus-outline"
@@ -188,11 +193,13 @@
                                 label="操作">
                             <template slot-scope="scope">
                                 <el-button
+                                        v-show="permissionsFlag.allot_permission"
                                         type="text"
                                         icon="el-icon-s-operation"
                                         @click="handleEditRole(scope.$index, scope.row)">分配权限
                                 </el-button>
                                 <el-button
+                                        v-show="permissionsFlag.remove_role"
                                         type="text"
                                         icon="el-icon-remove-outline"
                                         @click="handleDeleteRole(scope.$index, scope.row)">删除角色
@@ -233,11 +240,12 @@
             </el-dialog>
         </el-tab-pane>
 
-        <el-tab-pane label="权限列表">
+        <el-tab-pane label="权限列表" v-if="permissionsFlag.allot_permission">
             <el-row type="flex" justify="center">
                 <el-col :span="18">
                     <div class="handle-area">
                         <el-button
+                                v-show="permissionsFlag.allot_permission"
                                 :plain="true"
                                 @click="queryPermissionList"
                                 icon="el-icon-search"
