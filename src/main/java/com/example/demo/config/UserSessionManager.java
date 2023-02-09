@@ -1,7 +1,5 @@
 package com.example.demo.config;
 
-import org.apache.shiro.session.Session;
-import org.apache.shiro.session.mgt.SessionContext;
 import org.apache.shiro.web.servlet.ShiroHttpServletRequest;
 import org.apache.shiro.web.session.mgt.DefaultWebSessionManager;
 import org.apache.shiro.web.util.WebUtils;
