@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <!-- import CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+</head>
+<body>
+<div id="app">
+    <router-view></router-view>
+</div>
+</body>
+<template id="sign">
+    <div class="handle">
+        <div class="handle-input">
+            <el-button @click="login" plain>登录</el-button>
+        </div>
+    </div>
+</template>
+<template id="manager">
+    <div>
+        <el-menu
+                :default-active="this.$router.path"
+                class="el-menu-demo"
+                mode="horizontal"
+                router
+                @select="handleSelect"
+                background-color="#545c64"
+                text-color="#fff"
+                active-text-color="#ffd04b">
+            <el-menu-item index="/manager/manager1">用户管理</el-menu-item>
+            <el-menu-item index="/manager/manager2">角色管理</el-menu-item>
+            <el-menu-item index="/manager/manager3">权限管理</el-menu-item>
+        </el-menu>
+        <router-view></router-view>
+    </div>
+</template>
+<template id="manager1">
+    <span>模板1：用户管理</span>
+</template>
+<template id="manager2">
+    <span>模板2：角色管理</span>
+</template>
+<template id="manager3">
+    <span>模板3：权限管理</span>
+</template>
+
+<!-- import Vue before Element -->
+<script src="https://unpkg.com/vue@2/dist/vue.js"></script>
+<!-- import JavaScript -->
+<script src="https://unpkg.com/element-ui/lib/index.js"></script>
+<!-- import Axios -->
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+<!-- import Router -->
+<script src="https://cdn.staticfile.org/vue-router/2.7.0/vue-router.min.js"></script>
+<script>
+    const Sign = {
+        props: ['todo'],
+        template: '#sign',
+        data() {
+            return {
+                username: ''
+            }
+        },
+        methods: {
+            login() {
+                this.$router.push({
+                    name: 'manager',
+                    params: {
+                    }
+                });
+            }
+        },
+        mounted() {
+            console.log('组件Sign被挂载了');
+        }
+    };
+    const Manager = {
+        props: ['todo'],
+        template: '#manager',
+        data() {
+            return {
+                activeIndex: '1'
+            }
+        },
+        methods: {
+            handleSelect(key, keyPath) {
+                console.log(key, keyPath);
+            }
+        },
+        mounted() {
+            console.log('组件Manager被挂载了');
+        },
+        created() {
+
+        }
+    };
+    const Manager1 = {
+        props: ['todo'],
+        template: '#manager1',
+        data() {
+            return {
+                token: ''
+
+            }
+        },
+        methods: {
+
+        },
+        mounted() {
+            console.log('组件Manager1被挂载了');
+        },
+        created() {
+
+        }
+    };
+    const Manager2 = {
+        props: ['todo'],
+        template: '#manager2',
+        data() {
+            return {
+                token: ''
+
+            }
+        },
+        methods: {
+
+        },
+        mounted() {
+            console.log('组件Manager2被挂载了');
+        },
+        created() {
+
+        }
+    };
+    const Manager3 = {
+        props: ['todo'],
+        template: '#manager3',
+        data() {
+            return {
+                token: ''
+
+            }
+        },
+        methods: {
+
+        },
+        mounted() {
+            console.log('组件Manager3被挂载了');
+        },
+        created() {
+
+        }
+    };
+    const router = new VueRouter({
+        routes:[
+            {
+                path: '/',
+                name: 'sign',
+                component: Sign
+            },
+            {
+                path: '/manager',
+                name: 'manager',
+                component: Manager,
+                children:[
+                    {
+                        path: 'manager1',
+                        component: Manager1
+                    },
+                    {
+                        path: 'manager2',
+                        component: Manager2
+                    },
+                    {
+                        path: 'manager3',
+                        component: Manager3
+                    }
+                ]
+            }
+        ]
+    });
+    new Vue({
+        router,
+        el: '#app',
+        data: {
+
+        },
+        methods: {
+
+        }
+    });
+</script>
+<style>
+    .handle {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        top: 0;
+        left: 0;
+        margin: 0;
+        background-image: url(banner.jpg);
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size: cover;
+        overflow: hidden;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+    .handle-input {
+        display: flex;
+        flex-direction: column;
+    }
+</style>
+</html>
