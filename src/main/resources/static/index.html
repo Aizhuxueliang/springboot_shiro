@@ -10,24 +10,25 @@
     <router-view></router-view>
 </div>
 <template id="sign">
-    <div class="handle">
+    <div class="bg-image handle">
         <div class="handle-input">
-            <div class="high70">
+            <div>
                 <span>用户名称:</span>
                 <el-input
                         v-model="username"
                         placeholder="请输入用户名称"
                         clearable></el-input>
-            </div>
-            <div class="high70">
+            </div><div>
                 <span>密码:</span>
                 <el-input
                         v-model="password"
                         placeholder="请输入密码"
                         clearable
                         show-password></el-input>
+            </div><div>
+                <el-checkbox v-model="rememberMe">记住我</el-checkbox>
+                <el-button style="width: 100%;" @click="login" type="primary" plain>登录</el-button>
             </div>
-            <el-button @click="login" plain>登录</el-button>
         </div>
     </div>
 </template>
@@ -290,6 +291,7 @@
             return {
                 username: '',
                 password: '',
+                rememberMe: false,
                 permissionsStr: [],
                 token: ''
             }
@@ -1016,7 +1018,7 @@
     .high70 {
         height: 70px;
     }
-    .handle {
+    .bg-image {
         position: absolute;
         width: 100%;
         height: 100%;
@@ -1028,13 +1030,17 @@
         background-repeat: no-repeat;
         background-size: cover;
         overflow: hidden;
+    }
+    .handle {
         display: flex;
         justify-content: center;
         align-items: center;
     }
     .handle-input {
+        height: 30%;
         display: flex;
         flex-direction: column;
+        justify-content: space-evenly;
     }
 </style>
 </html>
