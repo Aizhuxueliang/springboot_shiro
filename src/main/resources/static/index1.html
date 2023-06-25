@@ -11,25 +11,9 @@
 </div>
 </body>
 <template id="sign">
-    <div class="bg-image handle">
+    <div class="handle">
         <div class="handle-input">
-            <div>
-                <span>用户名称:</span>
-                <el-input
-                        v-model="username"
-                        placeholder="请输入用户名称"
-                        clearable></el-input>
-            </div><div>
-            <span>密码:</span>
-            <el-input
-                    v-model="password"
-                    placeholder="请输入密码"
-                    clearable
-                    show-password></el-input>
-        </div><div>
-            <el-checkbox v-model="rememberMe">记住我</el-checkbox>
-            <el-button style="width: 100%;" @click="login" type="primary" plain>登录</el-button>
-        </div>
+            <el-button @click="login" plain>登录</el-button>
         </div>
     </div>
 </template>
@@ -44,7 +28,7 @@
                 background-color="#545c64"
                 text-color="#fff"
                 active-text-color="#ffd04b">
-            <el-menu-item index="/manager/">用户管理</el-menu-item>
+            <el-menu-item index="/manager/manager1">用户管理</el-menu-item>
             <el-menu-item index="/manager/manager2">角色管理</el-menu-item>
             <el-menu-item index="/manager/manager3">权限管理</el-menu-item>
         </el-menu>
@@ -52,232 +36,13 @@
     </div>
 </template>
 <template id="manager1">
-    <el-row type="flex" justify="center">
-        <el-col :span="18">
-            <div class="handle-area">
-                <div class="demo-input">
-                    <span>用户ID:</span>
-                    <el-input
-                            v-model="id"
-                            placeholder="请输入用户ID"
-                            type="number"
-                            size="medium"
-                            clearable></el-input>
-                    <span>用户名称:</span>
-                    <el-input
-                            v-model="username"
-                            placeholder="请输入用户名称"
-                            size="medium"
-                            clearable></el-input>
-                    <el-button
-                            :plain="true"
-                            @click="queryUserList"
-                            icon="el-icon-search"
-                            size="medium">查询用户</el-button>
-                </div>
-                <el-button
-                        :plain="true"
-                        @click="handleAddUser"
-                        icon="el-icon-user"
-                        size="medium">新建用户</el-button>
-            </div>
-            <el-table
-                    :data="tableData"
-                    border
-                    highlight-current-row>
-                <el-table-column
-                        prop="id"
-                        label="用户ID">
-                </el-table-column>
-                <el-table-column
-                        prop="username"
-                        label="用户名称">
-                </el-table-column>
-                <el-table-column
-                        label="操作">
-                    <template slot-scope="scope">
-                        <el-button
-                                type="text"
-                                icon="el-icon-set-up"
-                                @click="handleEditUser(scope.$index, scope.row)">分配角色
-                        </el-button>
-                        <el-button
-                                type="text"
-                                icon="el-icon-remove-outline"
-                                @click="handleDeleteUser(scope.$index, scope.row)">删除用户
-                        </el-button>
-                    </template>
-                </el-table-column>
-            </el-table>
-            <el-pagination
-                    layout="total, prev, pager, next, jumper"
-                    :total="userRowCount"
-                    :page-size="5"
-                    :current-page.sync="currentPage"
-                    @current-change="queryUserListPage"
-                    :hide-on-single-page="hidePageFlag"
-                    background>
-            </el-pagination>
-            <el-dialog :title="roleTitle" :visible.sync="dialogEditUser" :before-close="handleClose">
-                <el-transfer
-                        v-model="transferValue"
-                        :data="transferData"
-                        :titles="['待分配角色', '已分配角色']">
-                </el-transfer>
-                <span slot="footer" class="dialog-footer">
-                            <el-button @click="handleClose">取 消</el-button>
-                            <el-button type="primary" @click="assignRoles">确 定</el-button>
-                        </span>
-            </el-dialog>
-            <el-dialog title="新建用户" :visible.sync="dialogAddUser" :before-close="handleClose">
-                <div class="high70">
-                    <span>用户名称:</span>
-                    <el-input
-                            v-model="username"
-                            placeholder="请输入用户名称"
-                            size="medium"
-                            clearable></el-input>
-                </div>
-                <div class="high70">
-                    <span>密码:</span>
-                    <el-input
-                            v-model="password"
-                            placeholder="请输入密码"
-                            size="medium"
-                            clearable
-                            show-password></el-input>
-                </div>
-                <div class="high70">
-                    <span>再次输入密码:</span>
-                    <el-input
-                            v-model="password1"
-                            placeholder="请再次输入密码"
-                            size="medium"
-                            show-password></el-input>
-                </div>
-                <div class="high70">
-                    <span>备注:</span>
-                    <el-input
-                            v-model="reserve"
-                            placeholder="请输入用户备注"
-                            size="medium"></el-input>
-                </div>
-                <span slot="footer" class="dialog-footer">
-                    <el-button @click="handleClose">取 消</el-button>
-                    <el-button type="primary" @click="insertUser">确 定</el-button>
-                </span>
-            </el-dialog>
-        </el-col>
-    </el-row>
+    <span>模板1：用户管理</span>
 </template>
 <template id="manager2">
-    <el-row type="flex" justify="center">
-        <el-col :span="18">
-            <div class="handle-area">
-                <el-button
-                        :plain="true"
-                        @click="queryRoleList"
-                        icon="el-icon-search"
-                        size="medium">角色查询</el-button>
-                <el-button
-                        :plain="true"
-                        @click="handleAddRole"
-                        icon="el-icon-circle-plus-outline"
-                        size="medium">新建角色</el-button>
-            </div>
-            <el-table
-                    :data="roleData"
-                    border
-                    highlight-current-row>
-                <el-table-column
-                        prop="id"
-                        label="角色ID">
-                </el-table-column>
-                <el-table-column
-                        prop="name"
-                        label="角色名称">
-                </el-table-column>
-                <el-table-column
-                        prop="description"
-                        label="角色描述">
-                </el-table-column>
-                <el-table-column
-                        label="操作">
-                    <template slot-scope="scope">
-                        <el-button
-                                type="text"
-                                icon="el-icon-s-operation"
-                                @click="handleEditRole(scope.$index, scope.row)">分配权限
-                        </el-button>
-                        <el-button
-                                type="text"
-                                icon="el-icon-remove-outline"
-                                @click="handleDeleteRole(scope.$index, scope.row)">删除角色
-                        </el-button>
-                    </template>
-                </el-table-column>
-            </el-table>
-            <el-dialog :title="permissionsTitle" :visible.sync="dialogEditRole" :before-close="handleClose">
-                <el-checkbox-group v-model="checkedPermissions" class="el-checkbox-group-dialog">
-                    <el-checkbox v-for="permission in permissions" :label="permission.name" :key="permission.name">{{permission.description}}</el-checkbox>
-                </el-checkbox-group>
-                <span slot="footer" class="dialog-footer">
-			        <el-button @click="handleClose">取 消</el-button>
-			        <el-button type="primary" @click="assignPermissions">确 定</el-button>
-		        </span>
-            </el-dialog>
-            <el-dialog title="新建角色" :visible.sync="dialogAddRole" :before-close="handleClose">
-                <div class="high70">
-                    <span>角色名称:</span>
-                    <el-input
-                            v-model="name"
-                            placeholder="请输入角色名称"
-                            size="medium"></el-input>
-                </div>
-                <div class="high70">
-                    <span>角色描述:</span>
-                    <el-input
-                            v-model="description"
-                            placeholder="请输入角色描述"
-                            size="medium"></el-input>
-                </div>
-                <span slot="footer" class="dialog-footer">
-                    <el-button @click="handleClose">取 消</el-button>
-                    <el-button type="primary" @click="insertRole">确 定</el-button>
-                </span>
-            </el-dialog>
-        </el-col>
-    </el-row>
+    <span>模板2：角色管理</span>
 </template>
 <template id="manager3">
-    <el-row type="flex" justify="center">
-        <el-col :span="18">
-            <div class="handle-area">
-                <el-button
-                        :plain="true"
-                        @click="queryPermissionList"
-                        icon="el-icon-search"
-                        size="medium">权限查询</el-button>
-            </div>
-            <el-table
-                    :data="permissionData"
-                    border
-                    highlight-current-row>
-                <el-table-column
-                        prop="id"
-                        label="权限ID">
-                </el-table-column>
-                <el-table-column
-                        prop="name"
-                        label="权限名称">
-                </el-table-column>
-                <el-table-column
-                        prop="description"
-                        label="权限描述">
-                </el-table-column>
-            </el-table>
-        </el-col>
-    </el-row>
+    <span>模板3：权限管理</span>
 </template>
 
 <!-- import Vue before Element -->
@@ -294,48 +59,15 @@
         template: '#sign',
         data() {
             return {
-                username: '',
-                password: '',
-                rememberMe: false,
-                permissionsStr: [],
-                token: ''
+                username: ''
             }
         },
         methods: {
             login() {
-                axios.defaults.headers.post['Content-Type'] = 'application/json;charset=UTF-8';
-                axios({
-                    method: 'post',
-                    url: '/user/login',
-                    data: JSON.stringify({
-                        username: this.username,
-                        password: this.password
-                    })
-                }).then(response => {
-                    if(typeof response.data.error !== 'undefined' || response.data.error != null){
-                        this.username = '';
-                        this.password = '';
-                        ELEMENT.Notification.error({
-                            title: '登录失败！',
-                            message: response.data.error,
-                            position: 'top-right',
-                            showClose: false,
-                            offset: 110
-                        });
-                        return;
+                this.$router.push({
+                    name: 'manager',
+                    params: {
                     }
-                    this.permissionsStr = response.data.permissions;
-                    this.token = response.data.token;
-                    this.$router.push({
-                        name: 'manager',
-                        params: {
-                            token: this.token,
-                            permissionsStr: this.permissionsStr
-                        }
-                    });
-                }).catch(error => {
-                    console.log(error);
-                    ELEMENT.Message(error);
                 });
             }
         },
@@ -348,7 +80,7 @@
         template: '#manager',
         data() {
             return {
-                activeIndex: '/manager/'
+                activeIndex: '1'
             }
         },
         methods: {
@@ -368,371 +100,18 @@
         template: '#manager1',
         data() {
             return {
-                // 用户管理
-                // 用户管理-表格
-                tableData: [],// 表格展示的用户数据
-                // 用户管理-分页
-                userRowCount: 0,// 用户总个数
-                currentPage: 0,// 当前页
-                hidePageFlag: true,// 只有一页时是否隐藏
-                // 用户管理-弹框
-                dialogEditUser: false,// 分配角色弹框
-                dialogAddUser: false,// 新建用户弹框
-                roleTitle: '',// 分配角色-弹框标题
-                // 用户管理-分配角色-穿梭框
-                transferData: [],// 穿梭框展示的数据
-                transferValue: [],// 穿梭框已勾选的值
-                // 用户管理-分配角色-角色列表
-                allRoleList: [],// 所有角色列表
-                roleList: [],// 为用户分配的角色列表
-                // 用户管理-新建用户-用户信息
-                id: null,// 用户信息-id
-                username: '',// 用户信息-名称
-                password: '',// 用户信息-密码
-                password1: '', // 用户信息-确认密码
-                reserve: ''// 用户信息-备注
+                token: ''
+
             }
         },
         methods: {
-            /**
-             * 查询用户列表
-             */
-            queryUserList() {
-                axios.defaults.headers.token = this.token;
-                axios.defaults.headers.post['Content-Type'] = 'application/json;charset=UTF-8';
-                axios({
-                    method: 'post',
-                    url: '/user/queryUserListPage',
-                    data: JSON.stringify({
-                        id: this.id,
-                        username: this.username
-                    })
-                }).then(response => {
-                    if(typeof response.data.error !== 'undefined' || response.data.error != null){
-                        ELEMENT.Notification.error({
-                            title: '查询用户失败！',
-                            message: response.data.error,
-                            position: 'top-right',
-                            showClose: false,
-                            offset: 110
-                        });
-                        return;
-                    }
-                    console.log(response.data);
-                    this.tableData = response.data.userListPage;
-                    this.userRowCount = response.data.userRowCount;
-                    if(this.userRowCount > 5) {
-                        this.hidePageFlag = false;
-                    } else {
-                        this.hidePageFlag = true;
-                    }
-                    this.currentPage = 1;
-                }).catch(error => {
-                    console.log(error);
-                    ELEMENT.Message(error);
-                });
-            },
 
-            /**
-             * 查询用户列表-分页
-             */
-            queryUserListPage() {
-                axios.defaults.headers.token = this.token;
-                axios.defaults.headers.post['Content-Type'] = 'application/json;charset=UTF-8';
-                axios({
-                    method: 'post',
-                    url: '/user/queryUserListPage',
-                    data: JSON.stringify({
-                        id: this.id,
-                        username: this.username,
-                        reserve1: this.currentPage
-                    })
-                }).then(response => {
-                    if(typeof response.data.error !== 'undefined' || response.data.error != null){
-                        ELEMENT.Notification.error({
-                            title: '查询用户失败！',
-                            message: response.data.error,
-                            position: 'top-right',
-                            showClose: false,
-                            offset: 110
-                        });
-                        return;
-                    }
-                    console.log(response.data);
-                    this.tableData = response.data.userListPage;
-                    this.userRowCount = response.data.userRowCount;
-                    if(this.userRowCount > 5) {
-                        this.hidePageFlag = false;
-                    } else {
-                        this.hidePageFlag = true;
-                    }
-                }).catch(error => {
-                    console.log(error);
-                    ELEMENT.Message(error);
-                });
-            },
-
-            /**
-             * 打开分配角色弹窗
-             *
-             * @param index
-             * @param row
-             */
-            handleEditUser(index, row) {
-                axios.defaults.headers.token = this.token;
-                axios.defaults.headers.post['Content-Type'] = 'application/json;charset=UTF-8';
-                axios({
-                    method: 'post',
-                    url: '/user/findRoleListByUserId',
-                    data: JSON.stringify({
-                        id: row.id
-                    })
-                }).then(response => {
-                    if(typeof response.data.error !== 'undefined' || response.data.error != null){
-                        this.dialogEditUser = false;
-                        ELEMENT.Notification.error({
-                            title: '为用户'+row.username+'分配角色失败！',
-                            message: response.data.error,
-                            position: 'top-right',
-                            showClose: false,
-                            offset: 110
-                        });
-                        return;
-                    }
-                    console.log(response.data);
-                    for(let item of response.data.allRoleList){
-                        this.transferData.push({
-                            key: item.id,
-                            label: item.description
-                        });
-                    }
-                    for(let item of response.data.beRoleList){
-                        this.transferValue.push(item.id);
-                    }
-                    this.id = row.id;
-                    this.username = row.username;
-                    this.allRoleList = response.data.allRoleList;
-                    this.roleTitle = '为用户'+row.username+'分配角色';
-                    this.dialogEditUser = true;
-                }).catch(error => {
-                    console.log(error);
-                    ELEMENT.Message(error);
-                });
-            },
-
-            /**
-             * 提交为用户分配的角色
-             */
-            assignRoles() {
-                for(let item of this.allRoleList){
-                    for(let i in this.transferValue){
-                        if (this.transferValue[i] == item.id) {
-                            this.roleList.push(item);
-                        }
-                    }
-                }
-                axios.defaults.headers.token = this.token;
-                axios.defaults.headers.post['Content-Type'] = 'application/json;charset=UTF-8';
-                axios({
-                    method: 'post',
-                    url: '/user/updateUserRole',
-                    data: JSON.stringify({
-                        id: this.id,
-                        username: this.username,
-                        roleList: this.roleList
-                    })
-                }).then(response => {
-                    if(typeof response.data.error !== 'undefined' || response.data.error != null){
-                        this.dialogEditUser = false;
-                        ELEMENT.Notification.error({
-                            title: '为用户'+row.username+'分配角色失败！',
-                            message: response.data.error,
-                            position: 'top-right',
-                            showClose: false,
-                            offset: 110
-                        });
-                        this.id = null;
-                        this.username = '';
-                        this.allRoleList = [];
-                        this.roleList = [];
-                        this.transferData = [];
-                        this.transferValue = [];
-                        return;
-                    }
-                    if (response.data.removeUserRole >= 0 && response.data.addUserRole >= 0) {
-                        this.dialogEditUser = false;
-                        ELEMENT.Notification({
-                            title: '更新成功',
-                            message: '为用户'+this.username+'，分配角色成功！',
-                            type: 'success',
-                            position: 'top-right',
-                            showClose: false,
-                            offset: 110
-                        });
-                        this.id = null;
-                        this.username = '';
-                        this.allRoleList = [];
-                        this.roleList = [];
-                        this.transferData = [];
-                        this.transferValue = [];
-                    }
-                    console.log(response.data);
-                }).catch(error => {
-                    console.log(error);
-                });
-
-            },
-
-            /**
-             * 删除用户
-             * @param index
-             * @param row
-             */
-            handleDeleteUser(index, row) {
-                //this.ruleForm = Object.assign({}, row, index); //这句是关键！！！
-                ELEMENT.MessageBox.confirm('此操作将永久删除用户'+row.id+', 是否继续?', '提示', {
-                    confirmButtonText: '确定',
-                    cancelButtonText: '取消',
-                    type: 'warning'
-                }).then(() => {
-                    axios.defaults.headers.token = this.token;
-                    axios.defaults.headers.post['Content-Type'] = 'application/json;charset=UTF-8';
-                    axios({
-                        method: 'post',
-                        url: '/user/removeUser',
-                        data: JSON.stringify({
-                            id: row.id
-                        })
-                    }).then(response => {
-                        if(typeof response.data.error !== 'undefined' || response.data.error != null){
-                            ELEMENT.Notification.error({
-                                title: '用户'+row.username+'，删除失败！',
-                                message: response.data.error,
-                                position: 'top-right',
-                                showClose: false,
-                                offset: 110
-                            });
-                            return;
-                        }
-                        if (response.data.removeUser >= 0 && response.data.removeUserRole >= 0) {
-                            if(((this.userRowCount - 1) % 5 == 0) && ((this.userRowCount - 1) / 5 == (this.currentPage - 1))) {
-                                this.currentPage = this.currentPage - 1;
-                            }
-                            this.queryUserListPage();
-                            ELEMENT.Notification({
-                                title: '删除成功',
-                                message: '用户'+row.username+'，删除成功！',
-                                type: 'success',
-                                position: 'top-right',
-                                showClose: false,
-                                offset: 110
-                            });
-                        }
-                    }).catch(error => {
-                        ELEMENT.Message({ type: 'info', message: error});
-                    });
-                }).catch(() => {
-                    ELEMENT.Message({ type: 'info', message: '已取消删除'});
-                });
-            },
-
-            /**
-             * 关闭弹窗
-             */
-            handleClose() {
-                // 用户管理-表格
-                this.tableData = [],// 表格展示的用户数据
-                // 用户管理-分页
-                this.userRowCount = 0,// 用户总个数
-                this.currentPage = 0,// 当前页
-                this.hidePageFlag = true,// 只有一页时是否隐藏
-                // 用户管理-弹框
-                this.dialogEditUser = false,// 分配角色弹框
-                this.dialogAddUser = false,// 新建用户弹框
-                this.roleTitle = '',// 分配角色-弹框标题
-                // 用户管理-分配角色-穿梭框
-                this.transferData = [],// 穿梭框展示的数据
-                this.transferValue = [],// 穿梭框已勾选的值
-                // 用户管理-分配角色-角色列表
-                this.allRoleList = [],// 所有角色列表
-                this.roleList = [],// 为用户分配的角色列表
-                // 用户管理-新建用户-用户信息
-                this.id = null,// 用户信息-id
-                this.username = '',// 用户信息-名称
-                this.password = '',// 用户信息-密码
-                this.password1 = '', // 用户信息-确认密码
-                this.reserve = ''// 用户信息-备注
-                ELEMENT.Message({
-                    message: '取消操作，系统不会保留任何更改',
-                    type:'warning'
-                });
-            },
-
-            /**
-             * 打开添加用户弹窗
-             */
-            handleAddUser(){
-                this.dialogAddUser = true;
-                this.id = null;
-                this.username = '';
-                this.password = '';
-                this.password1 = '';
-                this.reserve = '';
-            },
-
-            /**
-             * 提交新添加的用户信息
-             */
-            insertUser() {
-                axios.defaults.headers.token = this.token;
-                axios.defaults.headers.post['Content-Type'] = 'application/json;charset=UTF-8';
-                axios({
-                    method: 'post',
-                    url: '/user/insertUser',
-                    data: JSON.stringify({
-                        username: this.username,
-                        password: this.password,
-                        reserve: this.reserve
-                    })
-                }).then(response => {
-                    if(response.data.addUser > 0) {
-                        this.dialogAddUser = false;
-                        this.password = '';
-                        this.password1 = '';
-                        this.reserve = '';
-                        this.queryUserList();
-                        ELEMENT.Notification({
-                            title: '添加成功',
-                            message: '用户'+this.username+'，添加成功！',
-                            type: 'success',
-                            position: 'top-right',
-                            showClose: false,
-                            offset: 110
-                        });
-                    }
-                    if(typeof response.data.error !== 'undefined' || response.data.error != null){
-                        this.dialogAddUser = false;
-                        this.password = '';
-                        this.password1 = '';
-                        this.reserve = '';
-                        this.queryUserList();
-                        ELEMENT.Notification.error({
-                            title: '用户'+this.username+'，添加失败！',
-                            message: response.data.error,
-                            position: 'top-right',
-                            showClose: false,
-                            offset: 110
-                        });
-                        return;
-                    }
-                    console.log(response.data);
-                }).catch(error => {
-                    ELEMENT.Message({ type: 'info', message: error});
-                });
-            }
         },
         mounted() {
             console.log('组件Manager1被挂载了');
+        },
+        created() {
+
         }
     };
     const Manager2 = {
@@ -740,285 +119,18 @@
         template: '#manager2',
         data() {
             return {
-                // 角色管理
-                // 角色管理-表格
-                roleData: [],// 表格展示的角色数据
-                // 角色管理-新建角色-角色信息
-                roleId: null,// 角色信息-id
-                name: '',// 角色信息-名称
-                description: '',// 角色信息-描述
-                // 角色管理-弹窗
-                dialogAddRole: false,// 添加角色弹窗
-                dialogEditRole: false,// 修改角色弹窗
-                permissionsTitle: '',// 修改角色弹框标题
-                // 角色管理-分配权限-复选框
-                permissions: [],// 复选框展示的数据|所有权限列表
-                checkedPermissions: [],// 复选框已勾选的值
-                permissionList: []// 为角色分配的权限列表
+                token: ''
+
             }
         },
         methods: {
 
-            /**
-             * 查询角色列表
-             */
-            queryRoleList() {
-                axios.defaults.headers.token = this.token;
-                axios.defaults.headers.post['Content-Type'] = 'application/json;charset=UTF-8';
-                axios({
-                    method: 'post',
-                    url: '/user/findRoleListByUserId',
-                    data: JSON.stringify({
-                        id: 0
-                    })
-                }).then(response => {
-                    if(typeof response.data.error !== 'undefined' || response.data.error != null){
-                        ELEMENT.Notification.error({
-                            title: '查询失败！',
-                            message: response.data.error,
-                            position: 'top-right',
-                            showClose: false,
-                            offset: 110
-                        });
-                        return;
-                    }
-                    this.roleData = response.data.allRoleList;
-                }).catch(error => {
-                    console.log(error);
-                    ELEMENT.Message(error);
-                });
-
-            },
-
-            /**
-             * 分配权限弹窗
-             */
-            handleEditRole(index, row){
-                axios.defaults.headers.token = this.token;
-                axios.defaults.headers.post['Content-Type'] = 'application/json;charset=UTF-8';
-                axios({
-                    method: 'post',
-                    url: '/user/findPermissionListByRoleId',
-                    data: JSON.stringify({
-                        id: row.id
-                    })
-                }).then(response => {
-                    console.log(response.data);
-                    if(typeof response.data.error !== 'undefined' || response.data.error != null){
-                        ELEMENT.Notification.error({
-                            title: '查询失败！',
-                            message: response.data.error,
-                            position: 'top-right',
-                            showClose: false,
-                            offset: 110
-                        });
-                        return;
-                    }
-                    this.permissions = response.data.allPermissionList;
-                    for(let item of response.data.bePermissionList){
-                        this.checkedPermissions.push(item.name);
-                    }
-                    this.roleId = row.id;
-                    this.name = row.name;
-                    this.permissionsTitle = '为角色'+row.name+'分配权限';
-                    this.dialogEditRole = true;
-                }).catch(error => {
-                    console.log(error);
-                    ELEMENT.Message(error);
-                });
-            },
-
-            /**
-             * 删除角色
-             */
-            handleDeleteRole(index, row){
-                ELEMENT.MessageBox.confirm('此操作将永久删除角色'+row.name+', 是否继续?', '提示', {
-                    confirmButtonText: '确定',
-                    cancelButtonText: '取消',
-                    type: 'warning'
-                }).then(() => {
-                    axios.defaults.headers.token = this.token;
-                    axios.defaults.headers.post['Content-Type'] = 'application/json;charset=UTF-8';
-                    axios({
-                        method: 'post',
-                        url: '/user/removeRole',
-                        data: JSON.stringify({
-                            id: row.id
-                        })
-                    }).then(response => {
-                        if(typeof response.data.error !== 'undefined' || response.data.error != null){
-                            ELEMENT.Notification.error({
-                                title: '角色'+row.name+'，删除失败！',
-                                message: response.data.error,
-                                position: 'top-right',
-                                showClose: false,
-                                offset: 110
-                            });
-                            return;
-                        }
-                        if (response.data.removeRolePermission >= 0 && response.data.removeRole >= 0 && response.data.removeUserRole >= 0) {
-                            this.queryRoleList();
-                            ELEMENT.Notification({
-                                title: '删除成功',
-                                message: '角色'+row.name+'，删除成功！',
-                                type: 'success',
-                                position: 'top-right',
-                                showClose: false,
-                                offset: 110
-                            });
-                        }
-                    }).catch(error => {
-                        ELEMENT.Message({ type: 'info', message: error});
-                    });
-                }).catch(() => {
-                    ELEMENT.Message({ type: 'info', message: '已取消删除'});
-                });
-            },
-
-            /**
-             * 新加角色弹窗
-             */
-            handleAddRole(){
-                this.dialogAddRole = true;
-                this.name = '';
-                this.description = '';
-            },
-
-            /**
-             * 新加角色
-             */
-            insertRole(){
-                axios.defaults.headers.token = this.token;
-                axios.defaults.headers.post['Content-Type'] = 'application/json;charset=UTF-8';
-                axios({
-                    method: 'post',
-                    url: '/user/addRole',
-                    data: JSON.stringify({
-                        name: this.name,
-                        description: this.description
-                    })
-                }).then(response => {
-                    if(typeof response.data.error !== 'undefined' || response.data.error != null){
-                        ELEMENT.Notification.error({
-                            title: '角色'+this.name+'，添加失败！',
-                            message: response.data.error,
-                            position: 'top-right',
-                            showClose: false,
-                            offset: 110
-                        });
-                        this.dialogAddRole = false;
-                        this.name = '';
-                        this.description = '';
-                        return;
-                    }
-                    if(response.data.addRole > 0) {
-                        this.queryRoleList();
-                        ELEMENT.Notification({
-                            title: '添加成功',
-                            message: '角色'+this.name+'，添加成功！',
-                            type: 'success',
-                            position: 'top-right',
-                            showClose: false,
-                            offset: 110
-                        });
-                        this.dialogAddRole = false;
-                        this.name = '';
-                        this.description = '';
-                    }
-                    console.log(response.data);
-                }).catch(error => {
-                    ELEMENT.Message({ type: 'info', message: error});
-                });
-            },
-
-            /**
-             * 分配权限
-             */
-            assignPermissions(){
-                for(let item of this.permissions){
-                    for(let i in this.checkedPermissions){
-                        if (this.checkedPermissions[i] == item.name) {
-                            this.permissionList.push(item);
-                        }
-                    }
-                }
-                axios.defaults.headers.token = this.token;
-                axios.defaults.headers.post['Content-Type'] = 'application/json;charset=UTF-8';
-                axios({
-                    method: 'post',
-                    url: '/user/updateRolePermission',
-                    data: JSON.stringify({
-                        id: this.roleId,
-                        permissionList: this.permissionList,
-                    })
-                }).then(response => {
-                    if(typeof response.data.error !== 'undefined' || response.data.error != null){
-                        this.dialogEditRole = false;
-                        ELEMENT.Notification.error({
-                            title: '为角色'+this.name+'，分配权限失败！',
-                            message: response.data.error,
-                            position: 'top-right',
-                            showClose: false,
-                            offset: 110
-                        });
-                        this.roleId = null;
-                        this.name = null;
-                        this.permissions = [];
-                        this.checkedPermissions = [];
-                        this.permissionList = [];
-                        this.permissionsTitle = '';
-                        return;
-                    }
-                    if (response.data.removeRolePermission >= 0 && response.data.addRolePermission >= 0) {
-                        this.dialogEditRole = false;
-                        ELEMENT.Notification({
-                            title: '更新成功',
-                            message: '为角色'+this.name+'，分配权限成功！',
-                            type: 'success',
-                            position: 'top-right',
-                            showClose: false,
-                            offset: 110
-                        });
-                        this.roleId = null;
-                        this.name = null;
-                        this.permissions = [];
-                        this.checkedPermissions = [];
-                        this.permissionList = [];
-                        this.permissionsTitle = '';
-                    }
-                    console.log(response.data);
-                }).catch(error => {
-                    console.log(error);
-                    ELEMENT.Message(error);
-                });
-            },
-
-            /**
-             * 关闭弹窗
-             */
-            handleClose() {
-                // 角色管理-表格
-                this.roleData = [],// 表格展示的角色数据
-                // 角色管理-新建角色-角色信息
-                this.roleId = null,// 角色信息-id
-                this.name = '',// 角色信息-名称
-                this.description = '',// 角色信息-描述
-                // 角色管理-弹窗
-                this.dialogAddRole = false,// 添加角色弹窗
-                this.dialogEditRole = false,// 修改角色弹窗
-                this.permissionsTitle = '',// 修改角色弹框标题
-                // 角色管理-分配权限-复选框
-                this.permissions = [],// 复选框展示的数据|所有权限列表
-                this.checkedPermissions = [],// 复选框已勾选的值
-                this.permissionList = []// 为角色分配的权限列表
-                ELEMENT.Message({
-                    message: '取消操作，系统不会保留任何更改',
-                    type:'warning'
-                });
-            },
         },
         mounted() {
             console.log('组件Manager2被挂载了');
+        },
+        created() {
+
         }
     };
     const Manager3 = {
@@ -1026,44 +138,18 @@
         template: '#manager3',
         data() {
             return {
-                // 权限管理
-                // 权限管理-表格
-                permissionData: []// 表格展示的权限数据
+                token: ''
+
             }
         },
         methods: {
-            /**
-             * 权限查询
-             */
-            queryPermissionList() {
-                axios.defaults.headers.token = this.token;
-                axios.defaults.headers.post['Content-Type'] = 'application/json;charset=UTF-8';
-                axios({
-                    method: 'post',
-                    url: '/user/findPermissionListByRoleId',
-                    data: JSON.stringify({
-                        id: 0
-                    })
-                }).then(response => {
-                    if(typeof response.data.error !== 'undefined' || response.data.error != null){
-                        ELEMENT.Notification.error({
-                            title: '查询失败！',
-                            message: response.data.error,
-                            position: 'top-right',
-                            showClose: false,
-                            offset: 110
-                        });
-                        return;
-                    }
-                    this.permissionData = response.data.allPermissionList;
-                }).catch(error => {
-                    console.log(error);
-                    ELEMENT.Message(error);
-                });
-            }
+
         },
         mounted() {
             console.log('组件Manager3被挂载了');
+        },
+        created() {
+
         }
     };
     const router = new VueRouter({
@@ -1079,18 +165,15 @@
                 component: Manager,
                 children:[
                     {
-                        path: '/',
-                        name: 'manager1',
+                        path: 'manager1',
                         component: Manager1
                     },
                     {
                         path: 'manager2',
-                        name: 'manager2',
                         component: Manager2
                     },
                     {
                         path: 'manager3',
-                        name: 'manager3',
                         component: Manager3
                     }
                 ]
@@ -1109,53 +192,7 @@
     });
 </script>
 <style>
-    .el-pagination {
-        display: flex;
-        justify-content: flex-end;
-        align-items: center;
-        height: 60px;
-    }
-    .el-transfer {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-    }
-    .handle-area {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        height: 70px;
-        flex-wrap: nowrap;
-    }
-    .demo-input {
-        display: flex;
-        align-items: center;
-    }
-    .demo-input span {
-        white-space: nowrap;
-    }
-    .el-dialog__body {
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        flex-wrap: nowrap;
-        height: 280px;
-    }
-    .el-checkbox-group-dialog {
-        height: 100%;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        margin: auto;
-    }
-    .el-checkbox {
-        height: 30px;
-        line-height: 30px;
-    }
-    .high70 {
-        height: 70px;
-    }
-    .bg-image {
+    .handle {
         position: absolute;
         width: 100%;
         height: 100%;
@@ -1167,17 +204,13 @@
         background-repeat: no-repeat;
         background-size: cover;
         overflow: hidden;
-    }
-    .handle {
         display: flex;
         justify-content: center;
         align-items: center;
     }
     .handle-input {
-        height: 30%;
         display: flex;
         flex-direction: column;
-        justify-content: space-evenly;
     }
 </style>
 </html>
