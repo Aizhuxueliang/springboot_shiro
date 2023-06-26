@@ -40,7 +40,7 @@ public class ShiroConfig {
         //filterChainDefinitionMap.put("/user/**", "roles[admin]");
         //有权限才能访问
         filterChainDefinitionMap.put("/user/queryUserList", "perms[query_user, add_user, allot_roles, remove_user]");
-        filterChainDefinitionMap.put("/user/queryUserListPage", "perms[query_user]");
+        filterChainDefinitionMap.put("/user/queryUserListPage", "perms[query_user, add_user, allot_roles, remove_user]");
         filterChainDefinitionMap.put("/user/insertUser", "perms[add_user]");
         filterChainDefinitionMap.put("/user/removeUser", "perms[remove_user]");
         filterChainDefinitionMap.put("/user/findRoleListByUserId", "perms[allot_roles, query_role, add_role, remove_role, allot_permission]");
